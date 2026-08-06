@@ -29,35 +29,34 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": [ "src/styles.scss" ]
           },
           "configurations": {
-            "configurations": {
-              "production": {
-                "outputPath": "dist/story-drafts",
-                "baseHref": "/story-drafts",
-                "budgets": [
-                  {
-                    "type": "initial",
-                    "maximumWarning": "500kB",
-                    "maximumError": "1MB"
-                  },
-                  {
-                    "type": "anyComponentStyle",
-                    "maximumWarning": "4kB",
-                    "maximumError": "8kB"
-                  }
-                ],
-                "outputHashing": "all"
-              },
-              "development": {
-                "optimization": false,
-                "extractLicenses": false,
-                "sourceMap": true
-              }
+            "production": {
+              "outputPath": "dist/story-drafts",
+              "baseHref": "/story-drafts",
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
             },
-            "defaultConfiguration": "production"
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
           },
+          "defaultConfiguration": "production"
+        },
         "serve": {
           "builder": "@angular/build:dev-server",
           "configurations": {
