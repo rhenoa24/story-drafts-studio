@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "story-drafts": {
+    "story-drafts-studio": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -33,8 +33,8 @@
           },
           "configurations": {
             "production": {
-              "outputPath": "dist/story-drafts",
-              "baseHref": "/story-drafts",
+              "outputPath": "dist/story-drafts-studio",
+              "baseHref": "/story-drafts-studio",
               "budgets": [
                 {
                   "type": "initial",
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "story-drafts:build:production"
+              "buildTarget": "story-drafts-studio:build:production"
             },
             "development": {
-              "buildTarget": "story-drafts:build:development"
+              "buildTarget": "story-drafts-studio:build:development"
             }
           },
           "defaultConfiguration": "development"
