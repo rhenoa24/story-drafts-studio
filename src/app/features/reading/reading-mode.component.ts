@@ -1,7 +1,7 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, computed, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StoryDataService } from '../../core/services/story-data.service';
-import { SceneBlock } from '../../core/models';
+import { Block, SceneBlock } from '../../core/models';
 
 @Component({
   selector: 'app-reading-mode',
@@ -13,7 +13,7 @@ import { SceneBlock } from '../../core/models';
         <div class="stage-head">
           <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Exit to Editor</a>
           <span class="chapter-title">{{ chapter.title }}</span>
-          <span class="progress">{{ index() + 1 }} / {{ chapter.blocks.length }}</span>
+          <span class="progress">{{ revealedCount() }} / {{ chapter.blocks.length }}</span>
         </div>
 
         @if (activeScene(); as scene) {
@@ -25,44 +25,50 @@ import { SceneBlock } from '../../core/models';
           </div>
         }
 
-        <div class="stage-click" (click)="advance()">
-          @if (currentBlock(); as block) {
-            @switch (block.type) {
-              @case ('scene') {
-                <div class="beat scene-beat">
-                  <div class="scene-card">
-                    <h2>{{ block.locationName }}</h2>
-                    @if (block.timeOfDay) {
-                      <p class="dim">{{ block.timeOfDay }}</p>
-                    }
+        <div #scroller class="stage-scroll" (click)="advance()">
+          <div class="feed">
+            @for (block of revealedBlocks(); track block.id) {
+              @switch (block.type) {
+                @case ('scene') {
+                  <div class="beat scene-beat">
+                    <div class="scene-card">
+                      <h2>{{ block.locationName }}</h2>
+                      @if (block.timeOfDay) {
+                        <p class="dim">{{ block.timeOfDay }}</p>
+                      }
+                    </div>
                   </div>
-                </div>
-              }
-              @case ('narration') {
-                <div class="beat narration-beat" [innerHTML]="block.html"></div>
-              }
-              @case ('dialogue') {
-                <div class="beat dialogue-beat" [class.right]="block.align === 'right'">
-                  <div class="nameplate" [style.background]="characterColor(block.characterId)">
-                    {{ characterName(block.characterId) }}
+                }
+                @case ('narration') {
+                  <div class="beat narration-beat" [innerHTML]="block.html"></div>
+                }
+                @case ('dialogue') {
+                  <div class="beat dialogue-beat" [class.right]="block.align === 'right'">
+                    <div class="nameplate" [style.background]="characterColor(block.characterId)">
+                      {{ characterName(block.characterId) }}
+                    </div>
+                    <p class="dialogue-text">{{ block.text }}</p>
                   </div>
-                  <p class="dialogue-text">{{ block.text }}</p>
-                </div>
+                }
               }
             }
-          } @else {
-            <div class="beat end-beat">
-              <p class="eyebrow">End of Chapter</p>
-              @if (nextChapterId(); as nextId) {
-                <a class="btn primary" [routerLink]="['/read', nextId]">Continue to Next Chapter</a>
-              } @else {
-                <a class="btn primary" routerLink="/collections">Return to Collection</a>
-              }
-            </div>
-          }
+
+            @if (isComplete()) {
+              <div class="beat end-beat" (click)="$event.stopPropagation()">
+                <p class="eyebrow">End of Chapter</p>
+                @if (nextChapterId(); as nextId) {
+                  <a class="btn primary" [routerLink]="['/read', nextId]">Continue to Next Chapter</a>
+                } @else {
+                  <a class="btn primary" routerLink="/collections">Return to Collection</a>
+                }
+              </div>
+            }
+          </div>
         </div>
 
-        <div class="tap-hint">Click anywhere to continue</div>
+        @if (!isComplete()) {
+          <div class="tap-hint">Click anywhere to continue</div>
+        }
       </div>
     } @else {
       <p class="empty">Chapter not found.</p>
@@ -114,20 +120,38 @@ import { SceneBlock } from '../../core/models';
         color: var(--stage-soft);
       }
 
-      .stage-click {
+      .stage-scroll {
         flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 40px 24px;
+        min-height: 0;
+        overflow-y: auto;
         cursor: pointer;
-        min-height: 340px;
+        scroll-behavior: smooth;
+      }
+
+      .feed {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
       }
 
       .beat {
-        max-width: 620px;
         width: 100%;
         text-align: center;
+        animation: rise 0.25s ease;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .scene-card h2 {
@@ -183,6 +207,9 @@ import { SceneBlock } from '../../core/models';
         flex-direction: column;
         align-items: center;
         gap: 16px;
+        cursor: default;
+        padding-top: 20px;
+        border-top: 1px dashed rgba(241, 236, 223, 0.2);
       }
 
       .end-beat .eyebrow {
@@ -209,7 +236,11 @@ import { SceneBlock } from '../../core/models';
 })
 export class ReadingModeComponent {
   private readonly chapterId: string;
-  readonly index = signal(0);
+
+  /** Number of blocks revealed so far. Blocks accumulate in the feed rather than replacing one another. */
+  readonly revealedCount = signal(1);
+
+  @ViewChild('scroller') private scroller?: ElementRef<HTMLDivElement>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -222,18 +253,23 @@ export class ReadingModeComponent {
     return this.store.chapter(this.chapterId);
   }
 
-  currentBlock() {
+  revealedBlocks(): Block[] {
     const chapter = this.chapter();
-    if (!chapter) return undefined;
-    return chapter.blocks[this.index()];
+    if (!chapter) return [];
+    return chapter.blocks.slice(0, this.revealedCount());
   }
 
-  /** The most recent Scene Block at or before the current position sets the active backdrop. */
+  isComplete(): boolean {
+    const chapter = this.chapter();
+    return !!chapter && this.revealedCount() >= chapter.blocks.length;
+  }
+
+  /** The most recent Scene Block among the revealed blocks sets the active backdrop. */
   activeScene = computed<SceneBlock | undefined>(() => {
     const chapter = this.chapter();
     if (!chapter) return undefined;
     let scene: SceneBlock | undefined;
-    for (let i = 0; i <= this.index() && i < chapter.blocks.length; i++) {
+    for (let i = 0; i < this.revealedCount() && i < chapter.blocks.length; i++) {
       const b = chapter.blocks[i];
       if (b.type === 'scene') scene = b;
     }
@@ -253,9 +289,17 @@ export class ReadingModeComponent {
   advance(): void {
     const chapter = this.chapter();
     if (!chapter) return;
-    if (this.index() < chapter.blocks.length) {
-      this.index.update((i) => i + 1);
+    if (this.revealedCount() < chapter.blocks.length) {
+      this.revealedCount.update((n) => n + 1);
+      this.scrollToBottom();
     }
+  }
+
+  private scrollToBottom(): void {
+    requestAnimationFrame(() => {
+      const el = this.scroller?.nativeElement;
+      if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    });
   }
 
   characterName(id: string): string {
