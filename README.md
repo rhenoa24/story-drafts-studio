@@ -1,59 +1,121 @@
-# story-drafts-studio
-Linear Visual Novel coded in Angular 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
+# Story Drafts Studio
+>Story Drafts Studio is a local-first writing environment built with Angular for organizing, writing, and reading original stories. It combines the structure of a note organizer with the presentation of a linear visual novel. Instead of writing raw JSON or Markdown, stories are created through specialized editing tools that generate structured project files. Those files can then be committed to GitHub and published as a static website through GitHub Pages.
 
-## Development server
+The project is intentionally designed around a single-author workflow rather than collaborative editing or cloud storage.
 
-To start a local development server, run:
 
-```bash
-ng serve
-```
+## Current Scope (MVP)
+### Collections
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Collections are containers that organize chapters into larger story arcs or groups.
 
-## Code scaffolding
+A collection can contain:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- ordered chapters
+- standalone chapters
+- future support for grouping related chapters
 
-```bash
-ng generate component component-name
-```
+Collections provide navigation and determine reading order without restricting how ideas are drafted.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Chapters
 
-```bash
-ng generate --help
-```
+A chapter is the primary writing document.
 
-## Building
+Unlike a traditional text editor, chapters are composed of blocks.
 
-To build the project run:
+Examples:
 
-```bash
-ng build
-```
+- dialogue
+- narration
+- scene changes
+- (future) settings
+- (future) illustrations
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Blocks can be:
 
-## Running unit tests
+- inserted anywhere
+- reordered
+- edited independently
+- expanded later with new block types
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+The end of a chapter provides navigation to either:
 
-```bash
-ng test
-```
+- the next chapter
+- return to the collection
 
-## Running end-to-end tests
+## Dialogue Blocks
 
-For end-to-end (e2e) testing, run:
+Dialogue is one of the core block types.
 
-```bash
-ng e2e
-```
+Each dialogue block references a Character rather than duplicating character information.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Properties include:
 
-## Additional Resources
+- character
+- dialogue text
+- nameplate position (left/right)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The left/right positioning is purely visual, helping conversations naturally alternate between speakers.
+
+Future versions may include:
+
+- sprites
+- expressions
+- voice
+- animations
+
+## Characters
+
+Characters act as reusable templates.
+
+Current properties:
+
+- name
+- description
+- nameplate color
+
+Future properties might include:
+
+- sprite library
+- facial expressions
+- aliases
+- pronouns
+- default text effects
+- Reading Mode
+
+## Reading mode mimics the pacing of a visual novel.
+
+Instead of displaying the entire chapter at once:
+
+- only one block is shown
+- clicking advances to the next block
+- progression is completely linear
+
+This creates a more immersive reading experience while still functioning as a chapter log.
+
+## Edit Mode
+
+When running locally, a chapter can be opened in Edit Mode.
+
+Edit Mode allows:
+
+- block insertion
+- block reordering
+- rich text editing
+- chapter organization
+
+When published to GitHub Pages, editing is unavailable.
+
+Readers only access Reading Mode.
+
+## Out of Scope
+
+The project intentionally does not aim to become:
+
+- a Twine replacement
+- a Ren'Py replacement
+- a branching narrative engine
+- a multiplayer writing platform
+- a cloud-based note application
+
+Stories are intentionally linear.
