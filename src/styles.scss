@@ -2,11 +2,11 @@
 
 :root {
   /* -- paper & ink: the authoring desk -- */
-  --paper: #ede9df;
-  --paper-raised: #f6f3ea;
-  --ink: #23211d;
-  --ink-soft: #6b6558;
-  --rule: #d8d1bd;
+  --paper: #030A15;
+  --paper-raised: #00133569;
+  --ink: #E8F8FF;
+  --ink-soft: #466d9e;
+  --rule: #466e9e34;
 
   /* -- the stage: reading mode -- */
   --stage: #191d24;
@@ -26,7 +26,7 @@
   --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, monospace;
 
   --radius: 3px;
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 * {
@@ -60,6 +60,7 @@ h3 {
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 button {
@@ -78,51 +79,46 @@ button {
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.02em;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--ink-soft);
   background: transparent;
   color: var(--ink);
   padding: 8px 14px;
   border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--ink);
+  }
+
+  &.primary:hover {
+    background: var(--rule);
+  }
+
+  &.subtle {
+    border-color: var(--rule);
+    color: var(--ink-soft);
+
+    &:hover {
+      background: var(--rule);
+      color: var(--ink);
+    }
+  }
+
+  &.danger {
+    border-color: var(--dialogue);
+    color: var(--dialogue);
+
+    &:hover {
+      background: var(--dialogue);
+      color: var(--paper-raised);
+    }
+  }
 }
 
-.btn:hover {
-  background: var(--ink);
-  color: var(--paper-raised);
-}
 
-.btn.primary {
-  background: var(--ink);
-  color: var(--paper-raised);
-}
 
-.btn.primary:hover {
-  opacity: 0.85;
-  background: var(--ink);
-}
-
-.btn.subtle {
-  border-color: var(--rule);
-  color: var(--ink-soft);
-}
-
-.btn.subtle:hover {
-  background: var(--rule);
-  color: var(--ink);
-}
-
-.btn.danger {
-  border-color: var(--dialogue);
-  color: var(--dialogue);
-}
-
-.btn.danger:hover {
-  background: var(--dialogue);
-  color: var(--paper-raised);
-}
-
-input[type='text'],
+.btn.danger input[type='text'],
 textarea,
 select {
   font-family: var(--font-body);
