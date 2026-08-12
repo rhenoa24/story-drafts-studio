@@ -6,7 +6,10 @@
             <input type="text" class="title-input" [ngModel]="chapter.title"
                 (ngModelChange)="store.renameChapter(chapter.id, $event)" />
         </div>
-        <a class="btn primary" [routerLink]="['/read', chapter.id]">Preview in Reading Mode</a>
+        <div class="page-head-actions">
+            <a class="btn subtle" routerLink="/">← Collections</a>
+            <a class="btn primary" [routerLink]="['/read', chapter.id]">Preview in Reading Mode</a>
+        </div>
     </div>
 
     <ul class="blocks">

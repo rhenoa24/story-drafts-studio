@@ -1,6 +1,7 @@
 @if (chapter(); as chapter) {
 <div class="stage">
     <div class="stage-head">
+        <a class="btn subtle" routerLink="/collections">Return to Collection</a>
         @if (editMode.isEditModeEnabled) {
         <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Exit to Editor</a>
         }

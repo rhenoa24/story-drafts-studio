@@ -103,6 +103,43 @@ export class StoryDataService {
     return this._collections().filter((c) => c.parentId === parentId);
   }
 
+  moveChapterInCollection(collectionId: string, fromIndex: number, toIndex: number): void {
+    this._collections.update((all) =>
+      all.map((c) => {
+        if (c.id !== collectionId) return c;
+        const chapterIds = [...c.chapterIds];
+        const [moved] = chapterIds.splice(fromIndex, 1);
+        chapterIds.splice(toIndex, 0, moved);
+        return { ...c, chapterIds };
+      })
+    );
+    this.persist();
+  }
+
+  moveCollectionInParent(parentId: string | null, fromIndex: number, toIndex: number): void {
+    this._collections.update((all) => {
+      // positions in the full array occupied by this parent's children, in order
+      const siblingPositions = all
+        .map((c, i) => ({ c, i }))
+        .filter(({ c }) => c.parentId === parentId)
+        .map(({ i }) => i);
+
+      if (fromIndex < 0 || fromIndex >= siblingPositions.length) return all;
+      if (toIndex < 0 || toIndex >= siblingPositions.length) return all;
+
+      const siblings = siblingPositions.map((i) => all[i]);
+      const [moved] = siblings.splice(fromIndex, 1);
+      siblings.splice(toIndex, 0, moved);
+
+      const result = [...all];
+      siblingPositions.forEach((pos, idx) => {
+        result[pos] = siblings[idx];
+      });
+      return result;
+    });
+    this.persist();
+  }
+
   // ---------- chapters ----------
 
   addChapter(title: string, collectionId: string): Chapter {
