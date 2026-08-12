@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { StoryDataService } from './core/services/story-data.service';
+import { EditModeService } from './core/services/edit-mode.service';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,13 @@ import { StoryDataService } from './core/services/story-data.service';
         </a>
         <nav class="shell-nav">
           <a routerLink="/collections" routerLinkActive="active">Collections</a>
-          <a routerLink="/characters" routerLinkActive="active">Characters</a>
+          @if (editMode.isEditModeEnabled) {
+            <a routerLink="/characters" routerLinkActive="active">Characters</a>
+          }
         </nav>
-        <button class="btn subtle" (click)="export()">Export Project Files</button>
+        @if (editMode.isEditModeEnabled) {
+          <button class="btn subtle" (click)="export()">Export Project Files</button>
+        }
       </header>
       <main class="shell-main">
         <router-outlet />
@@ -93,7 +98,10 @@ import { StoryDataService } from './core/services/story-data.service';
   ]
 })
 export class AppComponent {
-  constructor(private readonly store: StoryDataService) {}
+  constructor(
+    private readonly store: StoryDataService,
+    readonly editMode: EditModeService
+  ) { }
 
   export(): void {
     this.store.exportProjectFiles();

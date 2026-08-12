@@ -1,6 +1,8 @@
-import { Component, ElementRef, ViewChild, computed, signal } from '@angular/core';
+import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StoryDataService } from '../../core/services/story-data.service';
+import { EditModeService } from '../../core/services/edit-mode.service';
 import { Block, SceneBlock } from '../../core/models';
 
 @Component({
@@ -11,7 +13,9 @@ import { Block, SceneBlock } from '../../core/models';
     @if (chapter(); as chapter) {
       <div class="stage">
         <div class="stage-head">
-          <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Exit to Editor</a>
+          @if (editMode.isEditModeEnabled) {
+            <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Exit to Editor</a>
+          }
           <span class="chapter-title">{{ chapter.title }}</span>
           <span class="progress">{{ revealedCount() }} / {{ chapter.blocks.length }}</span>
         </div>
@@ -235,22 +239,32 @@ import { Block, SceneBlock } from '../../core/models';
   ]
 })
 export class ReadingModeComponent {
-  private readonly chapterId: string;
+  private readonly route = inject(ActivatedRoute);
+  private readonly store = inject(StoryDataService);
+  readonly editMode = inject(EditModeService);
+
+  /** Reactive route param - updates even when Angular reuses this component instance across /read/:id navigations. */
+  private readonly paramMap = toSignal(this.route.paramMap);
+  private readonly chapterId = computed(() => this.paramMap()?.get('id') ?? '');
 
   /** Number of blocks revealed so far. Blocks accumulate in the feed rather than replacing one another. */
   readonly revealedCount = signal(1);
 
   @ViewChild('scroller') private scroller?: ElementRef<HTMLDivElement>;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly store: StoryDataService
-  ) {
-    this.chapterId = this.route.snapshot.paramMap.get('id')!;
+  constructor() {
+    // Whenever the chapter changes (including a "Continue" link reusing this
+    // same component instance), reset progress and jump the feed back to the top.
+    effect(() => {
+      this.chapterId();
+      this.revealedCount.set(1);
+      const el = this.scroller?.nativeElement;
+      if (el) el.scrollTop = 0;
+    });
   }
 
   chapter() {
-    return this.store.chapter(this.chapterId);
+    return this.store.chapter(this.chapterId());
   }
 
   revealedBlocks(): Block[] {

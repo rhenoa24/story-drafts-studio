@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Collection, Chapter } from '../../core/models';
 import { StoryDataService } from '../../core/services/story-data.service';
+import { EditModeService } from '../../core/services/edit-mode.service';
 
 @Component({
   selector: 'app-collection-node',
@@ -12,11 +13,13 @@ import { StoryDataService } from '../../core/services/story-data.service';
       <div class="node-row">
         <span class="eyebrow">Collection</span>
         <span class="node-name">{{ collection.name }}</span>
-        <span class="node-actions">
-          <button class="btn subtle" (click)="addSubCollection()">+ Sub-collection</button>
-          <button class="btn subtle" (click)="addChapter()">+ Chapter</button>
-          <button class="btn danger" (click)="remove()">Delete</button>
-        </span>
+        @if (editMode.isEditModeEnabled) {
+          <span class="node-actions">
+            <button class="btn subtle" (click)="addSubCollection()">+ Sub-collection</button>
+            <button class="btn subtle" (click)="addChapter()">+ Chapter</button>
+            <button class="btn danger" (click)="remove()">Delete</button>
+          </span>
+        }
       </div>
 
       @if (chapters.length) {
@@ -25,7 +28,9 @@ import { StoryDataService } from '../../core/services/story-data.service';
             <li class="chapter-row">
               <span class="chapter-title">{{ chapter.title }}</span>
               <span class="chapter-actions">
-                <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Edit</a>
+                @if (editMode.isEditModeEnabled) {
+                  <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Edit</a>
+                }
                 <a class="btn subtle" [routerLink]="['/read', chapter.id]">Read</a>
               </span>
             </li>
@@ -109,7 +114,10 @@ export class CollectionNodeComponent {
   @Input({ required: true }) collection!: Collection;
   @Output() changed = new EventEmitter<void>();
 
-  constructor(private readonly store: StoryDataService) {}
+  constructor(
+    private readonly store: StoryDataService,
+    readonly editMode: EditModeService
+  ) { }
 
   get chapters(): Chapter[] {
     return this.store.chaptersIn(this.collection.id);

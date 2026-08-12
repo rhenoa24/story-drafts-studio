@@ -1,26 +1,34 @@
 import { Routes } from '@angular/router';
+import { editModeGuard } from './core/guards/edit-mode.guard';
+
+import { CollectionListComponent } from './features/collections/collection-list.component';
+import { CharacterManagerComponent } from './features/characters/character-manager.component';
+import { ChapterEditorComponent } from './features/chapters/chapter-editor.component';
+import { ReadingModeComponent } from './features/reading/reading-mode.component';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'collections' },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'collections'
+  },
   {
     path: 'collections',
-    loadComponent: () =>
-      import('./features/collections/collection-list.component').then((m) => m.CollectionListComponent)
+    component: CollectionListComponent
   },
   {
     path: 'characters',
-    loadComponent: () =>
-      import('./features/characters/character-manager.component').then((m) => m.CharacterManagerComponent)
+    canActivate: [editModeGuard],
+    component: CharacterManagerComponent
   },
   {
     path: 'chapters/:id/edit',
-    loadComponent: () =>
-      import('./features/chapters/chapter-editor.component').then((m) => m.ChapterEditorComponent)
+    canActivate: [editModeGuard],
+    component: ChapterEditorComponent
   },
   {
     path: 'read/:id',
-    loadComponent: () =>
-      import('./features/reading/reading-mode.component').then((m) => m.ReadingModeComponent)
+    component: ReadingModeComponent
   },
   { path: '**', redirectTo: 'collections' }
 ];

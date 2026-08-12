@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { StoryDataService } from '../../core/services/story-data.service';
+import { EditModeService } from '../../core/services/edit-mode.service';
 import { CollectionNodeComponent } from './collection-node.component';
 
 @Component({
@@ -13,7 +14,9 @@ import { CollectionNodeComponent } from './collection-node.component';
           <span class="eyebrow">Library</span>
           <h1>Collections</h1>
         </div>
-        <button class="btn primary" (click)="addRoot()">+ New Collection</button>
+        @if (editMode.isEditModeEnabled) {
+          <button class="btn primary" (click)="addRoot()">+ New Collection</button>
+        }
       </div>
 
       @if (roots.length === 0) {
@@ -63,7 +66,10 @@ import { CollectionNodeComponent } from './collection-node.component';
   ]
 })
 export class CollectionListComponent {
-  constructor(private readonly store: StoryDataService) {}
+  constructor(
+    private readonly store: StoryDataService,
+    readonly editMode: EditModeService
+  ) { }
 
   get roots() {
     return this.store.childCollectionsOf(null);
