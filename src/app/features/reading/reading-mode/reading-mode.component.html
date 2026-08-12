@@ -40,7 +40,7 @@
                 <div class="nameplate" [style.background]="characterColor(block.characterId)">
                     {{ characterName(block.characterId) }}
                 </div>
-                <p class="dialogue-text">{{ block.text }}</p>
+                <p class="dialogue-text" [innerHTML]="block.html"></p>
             </div>
             }
             }

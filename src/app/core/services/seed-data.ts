@@ -37,14 +37,14 @@ export const SEED_CHAPTERS: Chapter[] = [
         id: 'blk-3',
         type: 'dialogue',
         characterId: 'char-mira',
-        text: "The coastline moved again. That's the third time this year.",
+        html: "<p>The coastline moved again. That's the third time this year.</p>",
         align: 'left'
       },
       {
         id: 'blk-4',
         type: 'dialogue',
         characterId: 'char-holt',
-        text: "Maybe it's not the coastline that's moving.",
+        html: "<p>Maybe it's not the coastline that's moving.</p>",
         align: 'right'
       },
       {
@@ -70,7 +70,7 @@ export const SEED_CHAPTERS: Chapter[] = [
         id: 'blk-7',
         type: 'dialogue',
         characterId: 'char-holt',
-        text: "Every keeper before me kept a log. I keep one too. Want to see what's different about mine?",
+        html: "<p>Every keeper before me kept a log. I keep one too. Want to see what's different about mine?</p>",
         align: 'left'
       },
       {

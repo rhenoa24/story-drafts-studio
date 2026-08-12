@@ -24,7 +24,8 @@ export interface NarrationBlock extends BaseBlock {
 export interface DialogueBlock extends BaseBlock {
   type: 'dialogue';
   characterId: string;
-  text: string;
+  /** Rich text stored as HTML, per the project's data philosophy */
+  html: string;
   align: 'left' | 'right';
 }
 
@@ -37,6 +38,6 @@ export function createEmptyBlock(type: BlockType, id: string): Block {
     case 'narration':
       return { id, type, html: '<p>New narration...</p>' };
     case 'dialogue':
-      return { id, type, characterId: '', text: '', align: 'left' };
+      return { id, type, characterId: '', html: '', align: 'left' };
   }
 }
