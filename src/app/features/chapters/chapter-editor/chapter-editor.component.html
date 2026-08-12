@@ -1,0 +1,57 @@
+@if (chapter(); as chapter) {
+<div class="page">
+    <div class="page-head">
+        <div>
+            <span class="eyebrow">Editing Chapter</span>
+            <input type="text" class="title-input" [ngModel]="chapter.title"
+                (ngModelChange)="store.renameChapter(chapter.id, $event)" />
+        </div>
+        <a class="btn primary" [routerLink]="['/read', chapter.id]">Preview in Reading Mode</a>
+    </div>
+
+    <ul class="blocks">
+        @for (block of chapter.blocks; track block.id; let i = $index) {
+        <li class="block-card" [attr.data-type]="block.type">
+            <div class="spine">{{ BLOCK_LABEL[block.type] }}</div>
+            <div class="block-body">
+                <div class="block-toolbar">
+                    <button class="btn subtle" [disabled]="i === 0" (click)="store.moveBlock(chapter.id, i, i - 1)">
+                        ↑
+                    </button>
+                    <button class="btn subtle" [disabled]="i === chapter.blocks.length - 1"
+                        (click)="store.moveBlock(chapter.id, i, i + 1)">
+                        ↓
+                    </button>
+                    <span class="spacer"></span>
+                    <button class="btn danger" (click)="store.removeBlock(chapter.id, block.id)">
+                        Remove
+                    </button>
+                </div>
+
+                @switch (block.type) {
+                @case ('scene') {
+                <app-scene-block-editor [block]="block" (patch)="store.updateBlock(chapter.id, block.id, $event)" />
+                }
+                @case ('narration') {
+                <app-narration-block-editor [block]="block" (patch)="store.updateBlock(chapter.id, block.id, $event)" />
+                }
+                @case ('dialogue') {
+                <app-dialogue-block-editor [block]="block" [characters]="store.characters()"
+                    (patch)="store.updateBlock(chapter.id, block.id, $event)" />
+                }
+                }
+            </div>
+        </li>
+        }
+    </ul>
+
+    <div class="add-toolbar">
+        <span class="eyebrow">Add block</span>
+        <button class="btn" (click)="add('scene')">+ Scene</button>
+        <button class="btn" (click)="add('narration')">+ Narration</button>
+        <button class="btn" (click)="add('dialogue')">+ Dialogue</button>
+    </div>
+</div>
+} @else {
+<p class="empty">Chapter not found.</p>
+}

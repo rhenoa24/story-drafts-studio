@@ -1,0 +1,21 @@
+<div class="page">
+    <div class="page-head">
+        <div>
+            <span class="eyebrow">Library</span>
+            <h1>Collections</h1>
+        </div>
+        @if (editMode.isEditModeEnabled) {
+        <button class="btn primary" (click)="addRoot()">+ New Collection</button>
+        }
+    </div>
+
+    @if (roots.length === 0) {
+    <p class="empty">No collections yet. Start with one to hold your chapters.</p>
+    } @else {
+    <ul class="root-list">
+        @for (root of roots; track root.id) {
+        <app-collection-node [collection]="root" (changed)="refresh()" />
+        }
+    </ul>
+    }
+</div>

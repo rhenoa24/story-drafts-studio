@@ -1,0 +1,35 @@
+ .fields {
+     display: flex;
+     gap: 14px;
+     margin-bottom: 10px;
+ }
+
+ label {
+     display: flex;
+     flex-direction: column;
+     gap: 4px;
+ }
+
+ .character {
+     flex: 1;
+ }
+
+ .align-toggle {
+     display: flex;
+     gap: 4px;
+ }
+
+ .align-toggle .btn.active {
+     background: var(--dialogue);
+     border-color: var(--dialogue);
+     color: var(--paper-raised);
+ }
+
+ .text-field {
+     width: 100%;
+ }
+
+ textarea {
+     width: 100%;
+     resize: vertical;
+ }

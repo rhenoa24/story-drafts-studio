@@ -1,0 +1,67 @@
+@if (chapter(); as chapter) {
+<div class="stage">
+    <div class="stage-head">
+        @if (editMode.isEditModeEnabled) {
+        <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Exit to Editor</a>
+        }
+        <span class="chapter-title">{{ chapter.title }}</span>
+        <span class="progress">{{ revealedCount() }} / {{ chapter.blocks.length }}</span>
+    </div>
+
+    @if (activeScene(); as scene) {
+    <div class="scene-strip">
+        <span class="eyebrow">{{ scene.locationName }}</span>
+        @if (scene.timeOfDay) {
+        <span class="eyebrow dim">{{ scene.timeOfDay }}</span>
+        }
+    </div>
+    }
+
+    <div #scroller class="stage-scroll" (click)="advance()">
+        <div class="feed">
+            @for (block of revealedBlocks(); track block.id) {
+            @switch (block.type) {
+            @case ('scene') {
+            <div class="beat scene-beat">
+                <div class="scene-card">
+                    <h2>{{ block.locationName }}</h2>
+                    @if (block.timeOfDay) {
+                    <p class="dim">{{ block.timeOfDay }}</p>
+                    }
+                </div>
+            </div>
+            }
+            @case ('narration') {
+            <div class="beat narration-beat" [innerHTML]="block.html"></div>
+            }
+            @case ('dialogue') {
+            <div class="beat dialogue-beat" [class.right]="block.align === 'right'">
+                <div class="nameplate" [style.background]="characterColor(block.characterId)">
+                    {{ characterName(block.characterId) }}
+                </div>
+                <p class="dialogue-text">{{ block.text }}</p>
+            </div>
+            }
+            }
+            }
+
+            @if (isComplete()) {
+            <div class="beat end-beat" (click)="$event.stopPropagation()">
+                <p class="eyebrow">End of Chapter</p>
+                @if (nextChapterId(); as nextId) {
+                <a class="btn primary" [routerLink]="['/read', nextId]">Continue to Next Chapter</a>
+                } @else {
+                <a class="btn primary" routerLink="/collections">Return to Collection</a>
+                }
+            </div>
+            }
+        </div>
+    </div>
+
+    @if (!isComplete()) {
+    <div class="tap-hint">Click anywhere to continue</div>
+    }
+</div>
+} @else {
+<p class="empty">Chapter not found.</p>
+}

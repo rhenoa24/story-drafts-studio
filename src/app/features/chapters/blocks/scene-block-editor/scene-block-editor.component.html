@@ -1,0 +1,16 @@
+<div class="fields">
+    <label>
+        <span class="eyebrow">Location</span>
+        <input type="text" [ngModel]="block.locationName" (ngModelChange)="patch.emit({ locationName: $event })" />
+    </label>
+    <label>
+        <span class="eyebrow">Time of day</span>
+        <input type="text" placeholder="e.g. Dusk" [ngModel]="block.timeOfDay"
+            (ngModelChange)="patch.emit({ timeOfDay: $event })" />
+    </label>
+    <label>
+        <span class="eyebrow">Background</span>
+        <input type="text" placeholder="filename or label (future: asset picker)" [ngModel]="block.backgroundLabel"
+            (ngModelChange)="patch.emit({ backgroundLabel: $event })" />
+    </label>
+</div>

@@ -1,0 +1,37 @@
+<li class="node">
+    <div class="node-row">
+        <span class="eyebrow">Collection</span>
+        <span class="node-name">{{ collection.name }}</span>
+        @if (editMode.isEditModeEnabled) {
+        <span class="node-actions">
+            <button class="btn subtle" (click)="addSubCollection()">+ Sub-collection</button>
+            <button class="btn subtle" (click)="addChapter()">+ Chapter</button>
+            <button class="btn danger" (click)="remove()">Delete</button>
+        </span>
+        }
+    </div>
+
+    @if (chapters.length) {
+    <ul class="chapters">
+        @for (chapter of chapters; track chapter.id) {
+        <li class="chapter-row">
+            <span class="chapter-title">{{ chapter.title }}</span>
+            <span class="chapter-actions">
+                @if (editMode.isEditModeEnabled) {
+                <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Edit</a>
+                }
+                <a class="btn subtle" [routerLink]="['/read', chapter.id]">Read</a>
+            </span>
+        </li>
+        }
+    </ul>
+    }
+
+    @if (children.length) {
+    <ul class="children">
+        @for (child of children; track child.id) {
+        <app-collection-node [collection]="child" (changed)="changed.emit()" />
+        }
+    </ul>
+    }
+</li>

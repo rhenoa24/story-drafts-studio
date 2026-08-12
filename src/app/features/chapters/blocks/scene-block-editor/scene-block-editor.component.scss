@@ -1,0 +1,13 @@
+.fields {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 160px;
+}

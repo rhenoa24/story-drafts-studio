@@ -1,0 +1,156 @@
+  .stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--stage);
+      color: var(--stage-paper);
+      min-height: 0;
+  }
+
+  .stage-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(241, 236, 223, 0.12);
+      font-family: var(--font-mono);
+      font-size: 13px;
+  }
+
+  .chapter-title {
+      flex: 1;
+      font-family: var(--font-display);
+      font-size: 16px;
+  }
+
+  .progress {
+      color: var(--stage-soft);
+  }
+
+  .scene-strip {
+      display: flex;
+      gap: 12px;
+      padding: 8px 20px;
+      border-bottom: 1px dashed rgba(241, 236, 223, 0.15);
+  }
+
+  .scene-strip .eyebrow {
+      color: var(--stage-paper);
+  }
+
+  .scene-strip .dim {
+      color: var(--stage-soft);
+  }
+
+  .stage-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      cursor: pointer;
+      scroll-behavior: smooth;
+  }
+
+  .feed {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+  }
+
+  .beat {
+      width: 100%;
+      text-align: center;
+      animation: rise 0.25s ease;
+  }
+
+  @keyframes rise {
+      from {
+          opacity: 0;
+          transform: translateY(8px);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  .scene-card h2 {
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: 0.02em;
+  }
+
+  .scene-card .dim {
+      color: var(--stage-soft);
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 13px;
+  }
+
+  .narration-beat {
+      font-family: var(--font-body);
+      font-size: 20px;
+      line-height: 1.7;
+      font-style: italic;
+      color: var(--stage-paper);
+  }
+
+  .dialogue-beat {
+      text-align: left;
+  }
+
+  .dialogue-beat.right {
+      text-align: right;
+  }
+
+  .nameplate {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+  }
+
+  .dialogue-text {
+      font-family: var(--font-body);
+      font-size: 22px;
+      line-height: 1.5;
+  }
+
+  .end-beat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      cursor: default;
+      padding-top: 20px;
+      border-top: 1px dashed rgba(241, 236, 223, 0.2);
+  }
+
+  .end-beat .eyebrow {
+      color: var(--stage-paper);
+  }
+
+  .tap-hint {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--stage-soft);
+      padding: 10px;
+  }
+
+  .empty {
+      padding: 40px;
+      color: var(--ink-soft);
+      font-style: italic;
+  }

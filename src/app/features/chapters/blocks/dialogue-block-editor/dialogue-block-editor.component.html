@@ -1,0 +1,30 @@
+<div class="fields">
+    <label class="character">
+        <span class="eyebrow">Character</span>
+        <select [ngModel]="block.characterId" (ngModelChange)="patch.emit({ characterId: $event })">
+            <option value="" disabled>Choose a character...</option>
+            @for (char of characters; track char.id) {
+            <option [value]="char.id">{{ char.name }}</option>
+            }
+        </select>
+    </label>
+
+    <label class="align">
+        <span class="eyebrow">Nameplate</span>
+        <div class="align-toggle">
+            <button type="button" class="btn subtle" [class.active]="block.align === 'left'"
+                (click)="patch.emit({ align: 'left' })">
+                Left
+            </button>
+            <button type="button" class="btn subtle" [class.active]="block.align === 'right'"
+                (click)="patch.emit({ align: 'right' })">
+                Right
+            </button>
+        </div>
+    </label>
+</div>
+
+<label class="text-field">
+    <span class="eyebrow">Line</span>
+    <textarea rows="2" [ngModel]="block.text" (ngModelChange)="patch.emit({ text: $event })"></textarea>
+</label>
