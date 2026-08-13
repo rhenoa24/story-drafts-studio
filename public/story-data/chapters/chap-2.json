@@ -1,0 +1,28 @@
+{
+  "id": "chap-2",
+  "title": "What the Lighthouse Knew",
+  "collectionIds": [
+    "col-main"
+  ],
+  "blocks": [
+    {
+      "id": "blk-6",
+      "type": "scene",
+      "locationName": "The Lighthouse",
+      "timeOfDay": "Night",
+      "backgroundLabel": "lighthouse_interior.png"
+    },
+    {
+      "id": "blk-7",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>Every keeper before me kept a log. I keep one too. Want to see what's different about mine?</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-8",
+      "type": "narration",
+      "html": "<p>He opened a drawer that should not have existed in a room this small.</p>"
+    }
+  ]
+}

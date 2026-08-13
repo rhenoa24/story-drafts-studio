@@ -1,4 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
+import JSZip from 'jszip';
 import { Block, BlockType, Chapter, Character, Collection, createEmptyBlock } from '../models';
 import { SEED_CHAPTERS, SEED_CHARACTERS, SEED_COLLECTIONS } from './seed-data';
 import { EditModeService } from './edit-mode.service';
@@ -30,7 +31,7 @@ function seedState(): StoredState {
   return {
     collections: structuredClone(SEED_COLLECTIONS),
     chapters: structuredClone(SEED_CHAPTERS),
-    characters: structuredClone(SEED_CHARACTERS)
+    characters: structuredClone(SEED_CHARACTERS),
   };
 }
 
@@ -134,23 +135,25 @@ export class StoryDataService {
     const [collections, chapters, characters] = await Promise.all([
       Promise.all(
         (manifest.collectionIds ?? []).map((id) =>
-          this.fetchJson<Collection>(`${STORY_DATA_PATH}/collections/${id}.json`)
-        )
+          this.fetchJson<Collection>(`${STORY_DATA_PATH}/collections/${id}.json`),
+        ),
       ),
       Promise.all(
-        (manifest.chapterIds ?? []).map((id) => this.fetchJson<Chapter>(`${STORY_DATA_PATH}/chapters/${id}.json`))
+        (manifest.chapterIds ?? []).map((id) =>
+          this.fetchJson<Chapter>(`${STORY_DATA_PATH}/chapters/${id}.json`),
+        ),
       ),
       Promise.all(
         (manifest.characterIds ?? []).map((id) =>
-          this.fetchJson<Character>(`${STORY_DATA_PATH}/characters/${id}.json`)
-        )
-      )
+          this.fetchJson<Character>(`${STORY_DATA_PATH}/characters/${id}.json`),
+        ),
+      ),
     ]);
 
     return {
       collections: collections.filter((c): c is Collection => !!c),
       chapters: chapters.filter((c): c is Chapter => !!c),
-      characters: characters.filter((c): c is Character => !!c)
+      characters: characters.filter((c): c is Character => !!c),
     };
   }
 
@@ -161,7 +164,7 @@ export class StoryDataService {
     const state: StoredState = {
       collections: this._collections(),
       chapters: this._chapters(),
-      characters: this._characters()
+      characters: this._characters(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
@@ -187,7 +190,7 @@ export class StoryDataService {
 
   deleteCollection(id: string): void {
     this._collections.update((all) =>
-      all.filter((c) => c.id !== id).map((c) => (c.parentId === id ? { ...c, parentId: null } : c))
+      all.filter((c) => c.id !== id).map((c) => (c.parentId === id ? { ...c, parentId: null } : c)),
     );
     this.persist();
   }
@@ -204,7 +207,7 @@ export class StoryDataService {
         const [moved] = chapterIds.splice(fromIndex, 1);
         chapterIds.splice(toIndex, 0, moved);
         return { ...c, chapterIds };
-      })
+      }),
     );
     this.persist();
   }
@@ -236,10 +239,17 @@ export class StoryDataService {
   // ---------- chapters ----------
 
   addChapter(title: string, collectionId: string): Chapter {
-    const chapter: Chapter = { id: newId('chap'), title, collectionIds: [collectionId], blocks: [] };
+    const chapter: Chapter = {
+      id: newId('chap'),
+      title,
+      collectionIds: [collectionId],
+      blocks: [],
+    };
     this._chapters.update((all) => [...all, chapter]);
     this._collections.update((all) =>
-      all.map((c) => (c.id === collectionId ? { ...c, chapterIds: [...c.chapterIds, chapter.id] } : c))
+      all.map((c) =>
+        c.id === collectionId ? { ...c, chapterIds: [...c.chapterIds, chapter.id] } : c,
+      ),
     );
     this.persist();
     return chapter;
@@ -253,7 +263,7 @@ export class StoryDataService {
   deleteChapter(id: string): void {
     this._chapters.update((all) => all.filter((c) => c.id !== id));
     this._collections.update((all) =>
-      all.map((c) => ({ ...c, chapterIds: c.chapterIds.filter((cid) => cid !== id) }))
+      all.map((c) => ({ ...c, chapterIds: c.chapterIds.filter((cid) => cid !== id) })),
     );
     this.persist();
   }
@@ -280,7 +290,7 @@ export class StoryDataService {
         const index = atIndex ?? blocks.length;
         blocks.splice(index, 0, block);
         return { ...c, blocks };
-      })
+      }),
     );
     this.persist();
   }
@@ -291,16 +301,18 @@ export class StoryDataService {
         if (c.id !== chapterId) return c;
         return {
           ...c,
-          blocks: c.blocks.map((b) => (b.id === blockId ? ({ ...b, ...patch } as Block) : b))
+          blocks: c.blocks.map((b) => (b.id === blockId ? ({ ...b, ...patch } as Block) : b)),
         };
-      })
+      }),
     );
     this.persist();
   }
 
   removeBlock(chapterId: string, blockId: string): void {
     this._chapters.update((all) =>
-      all.map((c) => (c.id === chapterId ? { ...c, blocks: c.blocks.filter((b) => b.id !== blockId) } : c))
+      all.map((c) =>
+        c.id === chapterId ? { ...c, blocks: c.blocks.filter((b) => b.id !== blockId) } : c,
+      ),
     );
     this.persist();
   }
@@ -313,7 +325,7 @@ export class StoryDataService {
         const [moved] = blocks.splice(fromIndex, 1);
         blocks.splice(toIndex, 0, moved);
         return { ...c, blocks };
-      })
+      }),
     );
     this.persist();
   }
@@ -325,7 +337,7 @@ export class StoryDataService {
       id: newId('char'),
       name,
       description: '',
-      nameplateColor: '#3A5A6E'
+      nameplateColor: '#3A5A6E',
     };
     this._characters.update((all) => [...all, character]);
     this.persist();
@@ -345,14 +357,12 @@ export class StoryDataService {
   // ---------- export: human-readable project files ----------
 
   /**
-   * Writes the current draft out as the `story-data/` folder structure the
-   * app reads from: a manifest plus one JSON file per Collection, Chapter,
-   * and Character. Files download individually (staggered slightly so
-   * browsers don't block a burst of downloads) - copy the resulting
-   * `story-data/` folder into your Angular project's `public/story-data/`
-   * and commit it.
+   * Bundles the current draft into a single `story-data.zip`, structured as
+   * a `story-data/` folder (a manifest plus one JSON file per Collection,
+   * Chapter, and Character) - unzip it and drop the `story-data/` folder
+   * straight into your Angular project's `public/` directory, then commit.
    */
-  exportProjectFiles(): void {
+  async exportProjectFiles(): Promise<void> {
     if (typeof document === 'undefined') return;
 
     const collections = this._collections();
@@ -362,31 +372,33 @@ export class StoryDataService {
     const manifest: Manifest = {
       collectionIds: collections.map((c) => c.id),
       chapterIds: chapters.map((c) => c.id),
-      characterIds: characters.map((c) => c.id)
+      characterIds: characters.map((c) => c.id),
     };
 
-    const downloadFile = (filename: string, data: unknown) => {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    };
+    const zip = new JSZip();
+    const root = zip.folder(STORY_DATA_PATH)!;
+    const json = (data: unknown) => JSON.stringify(data, null, 2);
 
-    const files: Array<{ filename: string; data: unknown }> = [
-      { filename: `${STORY_DATA_PATH}/manifest.json`, data: manifest },
-      ...collections.map((c) => ({ filename: `${STORY_DATA_PATH}/collections/${c.id}.json`, data: c })),
-      ...chapters.map((c) => ({ filename: `${STORY_DATA_PATH}/chapters/${c.id}.json`, data: c })),
-      ...characters.map((c) => ({ filename: `${STORY_DATA_PATH}/characters/${c.id}.json`, data: c }))
-    ];
+    root.file('manifest.json', json(manifest));
 
-    files.forEach((file, i) => {
-      setTimeout(() => downloadFile(file.filename, file.data), i * 150);
-    });
+    const collectionsFolder = root.folder('collections')!;
+    for (const c of collections) collectionsFolder.file(`${c.id}.json`, json(c));
+
+    const chaptersFolder = root.folder('chapters')!;
+    for (const c of chapters) chaptersFolder.file(`${c.id}.json`, json(c));
+
+    const charactersFolder = root.folder('characters')!;
+    for (const c of characters) charactersFolder.file(`${c.id}.json`, json(c));
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${STORY_DATA_PATH}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 
   /** Imports a previously-exported full state blob (see exportBundle). */
@@ -399,7 +411,7 @@ export class StoryDataService {
     return {
       collections: this._collections(),
       chapters: this._chapters(),
-      characters: this._characters()
+      characters: this._characters(),
     };
   }
 }

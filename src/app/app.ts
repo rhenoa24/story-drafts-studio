@@ -16,6 +16,6 @@ export class App {
   ) {}
 
   export(): void {
-    this.store.exportProjectFiles();
+    void this.store.exportProjectFiles().catch((err) => console.error('Export failed', err));
   }
 }
