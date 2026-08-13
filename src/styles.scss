@@ -12,7 +12,7 @@
   --stage: #030A1569;
 
   /* -- block accents -- */
-  --scene:#0f213c;
+  --scene: #0f213c;
   --narration: #8a7a4a;
   --dialogue: #7a2e3a;
 
@@ -50,7 +50,7 @@ h3 {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.01em;
-  margin: 0 0 0.4em;
+  margin: 0;
 }
 
 a {
@@ -115,7 +115,8 @@ button {
 
 
 .btn.danger input[type='text'],
-textarea, input,
+textarea,
+input,
 select {
   font-family: var(--font-body);
   font-size: 15px;
@@ -128,7 +129,8 @@ select {
 }
 
 input[type='text']:focus,
-textarea:focus, input:focus,
+textarea:focus,
+input:focus,
 select:focus {
   outline: 2px solid var(--scene);
   outline-offset: 1px;
