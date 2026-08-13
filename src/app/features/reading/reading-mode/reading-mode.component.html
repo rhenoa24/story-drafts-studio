@@ -1,10 +1,16 @@
 @if (chapter(); as chapter) {
 <div class="stage">
     <div class="stage-head">
-        <a class="btn subtle" routerLink="/collections">Return to Collection</a>
-        @if (editMode.isEditModeEnabled) {
-        <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Exit to Editor</a>
-        }
+        <div class="toolbar">
+            <a class="btn subtle" routerLink="/collections">
+                <app-icon icon="arrowLeft"></app-icon>
+            </a>
+            @if (editMode.isEditModeEnabled) {
+            <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">
+                <app-icon icon="edit"></app-icon>
+            </a>
+            }
+        </div>
         <span class="chapter-title">{{ chapter.title }}</span>
         <span class="progress">{{ revealedCount() }} / {{ chapter.blocks.length }}</span>
     </div>
@@ -22,7 +28,7 @@
         <div class="feed">
             @for (block of revealedBlocks(); track block.id) {
             @switch (block.type) {
-            @case ('scene') {
+            <!-- @case ('scene') {
             <div class="beat scene-beat">
                 <div class="scene-card">
                     <h2>{{ block.locationName }}</h2>
@@ -31,7 +37,7 @@
                     }
                 </div>
             </div>
-            }
+            } -->
             @case ('narration') {
             <div class="beat narration-beat" [innerHTML]="block.html"></div>
             }

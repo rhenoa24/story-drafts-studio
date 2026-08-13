@@ -3,7 +3,7 @@
       display: flex;
       flex-direction: column;
       background: var(--stage);
-      color: var(--stage-paper);
+      color: var(--ink);
       min-height: 0;
   }
 
@@ -12,10 +12,16 @@
       align-items: center;
       gap: 16px;
       padding: 12px 20px;
-      border-bottom: 1px solid rgba(241, 236, 223, 0.12);
+      border-bottom: 1px solid var(--rule);
       font-family: var(--font-mono);
       font-size: 13px;
   }
+
+   .toolbar {
+       display: flex;
+       gap: 6px;
+       margin-bottom: 6px;
+   }
 
   .chapter-title {
       flex: 1;
@@ -24,22 +30,22 @@
   }
 
   .progress {
-      color: var(--stage-soft);
+      color: var(--ink-soft);
   }
 
   .scene-strip {
       display: flex;
       gap: 12px;
       padding: 8px 20px;
-      border-bottom: 1px dashed rgba(241, 236, 223, 0.15);
+      border-bottom: 1px dashed var(--rule);
   }
 
   .scene-strip .eyebrow {
-      color: var(--stage-paper);
+      color: var(--ink);
   }
 
   .scene-strip .dim {
-      color: var(--stage-soft);
+      color: var(--ink-soft);
   }
 
   .stage-scroll {
@@ -84,7 +90,7 @@
   }
 
   .scene-card .dim {
-      color: var(--stage-soft);
+      color: var(--ink-soft);
       font-family: var(--font-mono);
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -95,8 +101,7 @@
       font-family: var(--font-body);
       font-size: 20px;
       line-height: 1.7;
-      font-style: italic;
-      color: var(--stage-paper);
+      color: var(--ink-soft);
   }
 
   .dialogue-beat {
@@ -113,7 +118,6 @@
       font-size: 12px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: #fff;
       padding: 4px 10px;
       border-radius: var(--radius);
       margin-bottom: 10px;
@@ -132,11 +136,11 @@
       gap: 16px;
       cursor: default;
       padding-top: 20px;
-      border-top: 1px dashed rgba(241, 236, 223, 0.2);
+      border-top: 1px dashed var(--rule);
   }
 
   .end-beat .eyebrow {
-      color: var(--stage-paper);
+      color: var(--ink);
   }
 
   .tap-hint {
@@ -145,7 +149,7 @@
       font-size: 11px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--stage-soft);
+      color: var(--ink-soft);
       padding: 10px;
   }
 

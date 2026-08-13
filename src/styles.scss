@@ -9,17 +9,12 @@
   --rule: #466e9e34;
 
   /* -- the stage: reading mode -- */
-  --stage: #191d24;
-  --stage-paper: #f1ecdf;
-  --stage-soft: #8791a3;
+  --stage: #030A1569;
 
   /* -- block accents -- */
-  --scene: #3a5a6e;
-  --scene-soft: #dbe6ea;
+  --scene:#0f213c;
   --narration: #8a7a4a;
-  --narration-soft: #efe8d3;
   --dialogue: #7a2e3a;
-  --dialogue-soft: #f1dcdf;
 
   --font-display: 'Fraunces', 'Source Serif 4', serif;
   --font-body: 'Source Serif 4', Georgia, serif;
@@ -79,7 +74,7 @@ button {
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.02em;
-  border: 1px solid var(--ink-soft);
+  border: 1px solid var(--rule);
   background: transparent;
   color: var(--ink);
   padding: 8px 16px;
@@ -140,5 +135,5 @@ select:focus {
 }
 
 ::selection {
-  background: var(--scene-soft);
+  background: var(--rule);
 }

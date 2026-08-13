@@ -65,11 +65,27 @@ h1 {
     font-weight: 600;
 }
 
+.color-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.swatch.clickable {
+    cursor: pointer;
+}
+
+.native-color-picker {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .color-input {
     width: 90px;
     font-family: var(--font-mono);
     font-size: 12px;
-    border: none;
+    text-transform: uppercase;
 }
 
 textarea {

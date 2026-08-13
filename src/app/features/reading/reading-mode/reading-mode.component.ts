@@ -4,13 +4,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StoryDataService } from '../../../core/services/story-data.service';
 import { EditModeService } from '../../../core/services/edit-mode.service';
 import { Block, SceneBlock } from '../../../core/models';
+import { IconComponent } from '../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-reading-mode',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, IconComponent],
   templateUrl: './reading-mode.component.html',
-  styleUrl: './reading-mode.component.scss'
+  styleUrl: './reading-mode.component.scss',
 })
 export class ReadingModeComponent {
   private readonly route = inject(ActivatedRoute);
