@@ -21,7 +21,9 @@
      flex: 1;
  }
 
- .node-actions {
+ .node-actions,
+ .chapter-actions,
+ .child-actions {
      display: flex;
      gap: 6px;
  }
@@ -44,11 +46,6 @@
  .chapter-title {
      flex: 1;
      font-family: var(--font-body);
- }
-
- .chapter-actions {
-     display: flex;
-     gap: 6px;
  }
 
  .children {

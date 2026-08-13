@@ -5,13 +5,25 @@
         @if (editMode.isEditModeEnabled) {
         <span class="node-actions">
             @if (isEditingThisNode()) {
-            <button class="btn subtle" (click)="rename()">Rename</button>
-            <button class="btn subtle" (click)="addSubCollection()">+ Sub-collection</button>
-            <button class="btn subtle" (click)="addChapter()">+ Chapter</button>
-            <button class="btn danger" (click)="remove()">Delete</button>
+            <button class="btn subtle" (click)="rename()">
+                <app-icon icon="rename"></app-icon>
+            </button>
+            <button class="btn subtle" (click)="addSubCollection()">
+                <app-icon icon="add-collection"></app-icon>
+            </button>
+            <button class="btn subtle" (click)="addChapter()">
+                <app-icon icon="add"></app-icon>
+            </button>
+            <button class="btn danger" (click)="remove()">
+                <app-icon icon="delete"></app-icon>
+            </button>
             }
             <button class="btn subtle" (click)="toggleNodeEdit()">
-                {{ isEditingThisNode() ? 'Done' : 'Edit' }}
+                @if (isEditingThisNode()) {
+                <app-icon icon="done"></app-icon>
+                } @else {
+                <app-icon icon="edit"></app-icon>
+                }
             </button>
         </span>
         }
@@ -24,10 +36,15 @@
             <span class="chapter-title">{{ chapter.title }}</span>
             <span class="chapter-actions">
                 @if (isEditingThisNode()) {
-                <button class="btn subtle" (click)="moveChapterUp(i)" [disabled]="i === 0">↑</button>
-                <button class="btn subtle" (click)="moveChapterDown(i)"
-                    [disabled]="i === chapters.length - 1">↓</button>
-                <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">Edit</a>
+                <button class="btn subtle" (click)="moveChapterUp(i)" [disabled]="i === 0">
+                    <app-icon icon="arrowUp"></app-icon>
+                </button>
+                <button class="btn subtle" (click)="moveChapterDown(i)" [disabled]="i === chapters.length - 1">
+                    <app-icon icon="arrowDown"></app-icon>
+                </button>
+                <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">
+                    <app-icon icon="edit"></app-icon>
+                </a>
                 }
                 <a class="btn subtle" [routerLink]="['/read', chapter.id]">Read</a>
             </span>
@@ -42,9 +59,12 @@
         <li class="child-row">
             @if (isEditingThisNode()) {
             <span class="child-actions">
-                <button class="btn subtle" (click)="moveSubCollectionUp(i)" [disabled]="i === 0">↑</button>
-                <button class="btn subtle" (click)="moveSubCollectionDown(i)"
-                    [disabled]="i === children.length - 1">↓</button>
+                <button class="btn subtle" (click)="moveSubCollectionUp(i)" [disabled]="i === 0">
+                    <app-icon icon="arrowUp"></app-icon>
+                </button>
+                <button class="btn subtle" (click)="moveSubCollectionDown(i)" [disabled]="i === children.length - 1">
+                    <app-icon icon="arrowDown"></app-icon>
+                </button>
             </span>
             }
             <app-collection-node [collection]="child" (changed)="changed.emit()" />

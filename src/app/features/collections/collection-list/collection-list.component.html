@@ -5,7 +5,9 @@
             <h1>Collections</h1>
         </div>
         @if (editMode.isEditModeEnabled) {
-        <button class="btn primary" (click)="addRoot()">+ New Collection</button>
+        <button class="btn primary" (click)="addRoot()">
+            <app-icon icon="add-collection"></app-icon>
+            <span> New Collection</span></button>
         }
     </div>
 

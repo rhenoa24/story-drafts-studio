@@ -2,19 +2,20 @@ import { Component } from '@angular/core';
 import { StoryDataService } from '../../../core/services/story-data.service';
 import { EditModeService } from '../../../core/services/edit-mode.service';
 import { CollectionNodeComponent } from '../collection-node/collection-node.component';
+import { IconComponent } from '../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-collection-list',
   standalone: true,
-  imports: [CollectionNodeComponent],
+  imports: [CollectionNodeComponent, IconComponent],
   templateUrl: './collection-list.component.html',
-  styleUrl: './collection-list.component.scss'
+  styleUrl: './collection-list.component.scss',
 })
 export class CollectionListComponent {
   constructor(
     private readonly store: StoryDataService,
-    readonly editMode: EditModeService
-  ) { }
+    readonly editMode: EditModeService,
+  ) {}
 
   get roots() {
     return this.store.childCollectionsOf(null);

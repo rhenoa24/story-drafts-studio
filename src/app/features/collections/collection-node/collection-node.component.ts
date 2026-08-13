@@ -3,13 +3,14 @@ import { RouterLink } from '@angular/router';
 import { Collection, Chapter } from '../../../core/models';
 import { StoryDataService } from '../../../core/services/story-data.service';
 import { EditModeService } from '../../../core/services/edit-mode.service';
+import { IconComponent } from '../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-collection-node',
   standalone: true,
-  imports: [RouterLink, CollectionNodeComponent],
+  imports: [RouterLink, CollectionNodeComponent, IconComponent],
   templateUrl: './collection-node.component.html',
-  styleUrl: './collection-node.component.scss'
+  styleUrl: './collection-node.component.scss',
 })
 export class CollectionNodeComponent {
   @Input({ required: true }) collection!: Collection;
@@ -20,8 +21,8 @@ export class CollectionNodeComponent {
 
   constructor(
     private readonly store: StoryDataService,
-    readonly editMode: EditModeService
-  ) { }
+    readonly editMode: EditModeService,
+  ) {}
 
   toggleNodeEdit(): void {
     this._isEditingThisNode.update((v) => !v);
