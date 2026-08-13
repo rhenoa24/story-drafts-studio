@@ -9,8 +9,7 @@
       flex-direction: column;
       background: var(--stage);
       color: var(--ink);
-      max-height: 100vh;
-      overflow: auto;
+      max-height: calc(100vh - 64px);
   }
 
   .stage-head {
