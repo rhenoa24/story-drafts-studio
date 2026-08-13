@@ -19,22 +19,211 @@
     },
     {
       "id": "blk-3",
+      "type": "narration",
+      "html": "<p>The paper trembled between her fingers. The inked line of the coast should have followed the edge of the cliffs, curving south toward the harbor. Instead, according to the map, they were standing somewhere beneath the sea.</p>"
+    },
+    {
+      "id": "blk-4",
       "type": "dialogue",
       "characterId": "char-mira",
       "html": "<p>The coastline moved again. That's the third time this year.</p>",
       "align": "left"
     },
     {
-      "id": "blk-4",
+      "id": "blk-5",
       "type": "dialogue",
       "characterId": "char-holt",
       "html": "<p>Maybe it's not the coastline that's moving.</p>",
       "align": "right"
     },
     {
-      "id": "blk-5",
+      "id": "blk-6",
+      "type": "narration",
+      "html": "<p>Mira lowered the map and looked at him. Holt stood a few steps behind her, hands buried in the pockets of his weathered coat, as if he had been waiting all afternoon for her to say exactly that.</p>"
+    },
+    {
+      "id": "blk-7",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>Don't start.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-8",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>I didn't say anything.</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-9",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>You were about to.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-10",
+      "type": "narration",
+      "html": "<p>For a moment, neither of them spoke. Far below, waves struck the black rocks in slow, uneven intervals. The tide was coming in, though the water seemed farther away than it had any right to be.</p>"
+    },
+    {
+      "id": "blk-11",
+      "type": "narration",
+      "html": "<p>Mira folded the map along its oldest crease. It had belonged to her father, passed down with instructions that had never made much sense: <strong>Trust the landmarks. Never trust the lines between them.</strong></p>"
+    },
+    {
+      "id": "blk-12",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>You checked the markers?</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-13",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>Every one of them.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-14",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>And?</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-15",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>The third marker is six meters north of where it was last month.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-16",
+      "type": "narration",
+      "html": "<p>Holt finally took his hands from his pockets.</p>"
+    },
+    {
+      "id": "blk-17",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>That's impossible.</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-18",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>That's what I said last time.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-19",
       "type": "narration",
       "html": "<p>Below them, the lighthouse blinked once, twice, then held its light steady &mdash; as if it, too, was waiting for an answer.</p>"
+    },
+    {
+      "id": "blk-20",
+      "type": "scene",
+      "locationName": "Northern Cliffs",
+      "timeOfDay": "Nightfall",
+      "backgroundLabel": "cliffs_night.png"
+    },
+    {
+      "id": "blk-21",
+      "type": "narration",
+      "html": "<p>The steady beam cut across the darkening water. Mira watched it sweep over the horizon, disappear into the clouds, then return.</p>"
+    },
+    {
+      "id": "blk-22",
+      "type": "narration",
+      "html": "<p>On the second pass, she saw something that hadn't been there before.</p>"
+    },
+    {
+      "id": "blk-23",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>Holt.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-24",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>What?</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-25",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>Look at the water.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-26",
+      "type": "narration",
+      "html": "<p>He followed her gaze.</p>"
+    },
+    {
+      "id": "blk-27",
+      "type": "narration",
+      "html": "<p>At first, there was nothing. Only the dark sea, the broken reflection of the lighthouse, and the occasional white edge of a wave.</p>"
+    },
+    {
+      "id": "blk-28",
+      "type": "narration",
+      "html": "<p>Then the lighthouse beam returned.</p>"
+    },
+    {
+      "id": "blk-29",
+      "type": "narration",
+      "html": "<p>For less than a second, something vast appeared beyond the cliffs.</p>"
+    },
+    {
+      "id": "blk-30",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>Was that...</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-31",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>An island.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-32",
+      "type": "dialogue",
+      "characterId": "char-holt",
+      "html": "<p>There aren't any islands north of here.</p>",
+      "align": "right"
+    },
+    {
+      "id": "blk-33",
+      "type": "dialogue",
+      "characterId": "char-mira",
+      "html": "<p>There weren't.</p>",
+      "align": "left"
+    },
+    {
+      "id": "blk-34",
+      "type": "narration",
+      "html": "<p>The light swept past them again.</p>"
+    },
+    {
+      "id": "blk-35",
+      "type": "narration",
+      "html": "<p>The island was gone.</p>"
+    },
+    {
+      "id": "blk-36",
+      "type": "narration",
+      "html": "<p>Mira unfolded her father's map one more time. This time, neither of them noticed the new line appearing near the northern edge of the paper.</p>"
     }
   ]
 }
