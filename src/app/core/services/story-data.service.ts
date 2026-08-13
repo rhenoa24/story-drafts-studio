@@ -1,8 +1,14 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { Block, BlockType, Chapter, Character, Collection, createEmptyBlock } from '../models';
 import { SEED_CHAPTERS, SEED_CHARACTERS, SEED_COLLECTIONS } from './seed-data';
+import { EditModeService } from './edit-mode.service';
 
 const STORAGE_KEY = 'story-drafts-studio:v1';
+
+/** Where published JSON lives, relative to the app's <base href>. Copy the
+ *  exported `story-data/` folder into your Angular project's `public/`
+ *  directory so it ends up served at this same relative path. */
+const STORY_DATA_PATH = 'story-data';
 
 interface StoredState {
   collections: Collection[];
@@ -10,25 +16,57 @@ interface StoredState {
   characters: Character[];
 }
 
+interface Manifest {
+  collectionIds: string[];
+  chapterIds: string[];
+  characterIds: string[];
+}
+
 function newId(prefix: string): string {
   return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
+function seedState(): StoredState {
+  return {
+    collections: structuredClone(SEED_COLLECTIONS),
+    chapters: structuredClone(SEED_CHAPTERS),
+    characters: structuredClone(SEED_CHARACTERS)
+  };
+}
+
 /**
  * Story Drafts Studio has no backend. This service is the single source of
- * truth while editing locally: it holds everything in signals, mirrors every
- * change to localStorage so a refresh doesn't lose work, and can export the
- * current story as human-readable JSON files ready to be committed to Git.
+ * truth while editing locally: it holds everything in signals.
+ *
+ * Two different data sources feed it, depending on Edit Mode:
+ *
+ * - Locally (Edit Mode on): an in-progress draft is mirrored to
+ *   `localStorage` on every change, so a refresh never loses work. The very
+ *   first time there's no draft yet, it seeds itself from the published
+ *   `story-data/` JSON files if present, or the bundled sample story
+ *   otherwise.
+ * - Published (Edit Mode off, e.g. the deployed GitHub Pages site): it
+ *   *only* reads from the published `story-data/` JSON files - there is no
+ *   editing there, so `localStorage` is never consulted. This matches the
+ *   project's "the published site is purely a reader" rule.
+ *
+ * `exportProjectFiles()` writes the current draft back out as that same
+ * `story-data/` file structure so it can be copied into `public/story-data/`
+ * and committed to Git.
  */
 @Injectable({ providedIn: 'root' })
 export class StoryDataService {
   private readonly _collections = signal<Collection[]>([]);
   private readonly _chapters = signal<Chapter[]>([]);
   private readonly _characters = signal<Character[]>([]);
+  private readonly _ready = signal(false);
 
   readonly collections = this._collections.asReadonly();
   readonly chapters = this._chapters.asReadonly();
   readonly characters = this._characters.asReadonly();
+
+  /** True once the initial load (localStorage draft or published files) has resolved. */
+  readonly ready = this._ready.asReadonly();
 
   readonly characterMap = computed(() => {
     const map = new Map<string, Character>();
@@ -36,30 +74,87 @@ export class StoryDataService {
     return map;
   });
 
-  constructor() {
-    this.load();
+  constructor(private readonly editMode: EditModeService) {
+    void this.load();
   }
 
-  // ---------- persistence ----------
+  // ---------- initial load ----------
 
-  private load(): void {
-    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
-    if (raw) {
-      try {
-        const parsed: StoredState = JSON.parse(raw);
-        this._collections.set(parsed.collections ?? []);
-        this._chapters.set(parsed.chapters ?? []);
-        this._characters.set(parsed.characters ?? []);
-        return;
-      } catch {
-        // fall through to seed data if the stored blob is corrupt
+  private async load(): Promise<void> {
+    const published = await this.loadPublishedFiles();
+
+    if (this.editMode.isEditModeEnabled) {
+      const draft = this.loadLocalDraft();
+      if (draft) {
+        this.applyState(draft);
+      } else {
+        this.applyState(published ?? seedState());
+        this.persist();
       }
+    } else {
+      // Reading-only: reflect exactly what's been published, never a local draft.
+      this.applyState(published ?? seedState());
     }
-    this._collections.set(structuredClone(SEED_COLLECTIONS));
-    this._chapters.set(structuredClone(SEED_CHAPTERS));
-    this._characters.set(structuredClone(SEED_CHARACTERS));
-    this.persist();
+
+    this._ready.set(true);
   }
+
+  private applyState(state: StoredState): void {
+    this._collections.set(state.collections ?? []);
+    this._chapters.set(state.chapters ?? []);
+    this._characters.set(state.characters ?? []);
+  }
+
+  private loadLocalDraft(): StoredState | null {
+    const raw = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as StoredState;
+    } catch {
+      return null;
+    }
+  }
+
+  private async fetchJson<T>(path: string): Promise<T | null> {
+    if (typeof fetch === 'undefined') return null;
+    try {
+      const res = await fetch(path, { cache: 'no-cache' });
+      if (!res.ok) return null;
+      return (await res.json()) as T;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Loads the manifest + every referenced file from `story-data/`. Returns null if nothing's been published yet. */
+  private async loadPublishedFiles(): Promise<StoredState | null> {
+    const manifest = await this.fetchJson<Manifest>(`${STORY_DATA_PATH}/manifest.json`);
+    if (!manifest) return null;
+
+    const [collections, chapters, characters] = await Promise.all([
+      Promise.all(
+        (manifest.collectionIds ?? []).map((id) =>
+          this.fetchJson<Collection>(`${STORY_DATA_PATH}/collections/${id}.json`)
+        )
+      ),
+      Promise.all(
+        (manifest.chapterIds ?? []).map((id) => this.fetchJson<Chapter>(`${STORY_DATA_PATH}/chapters/${id}.json`))
+      ),
+      Promise.all(
+        (manifest.characterIds ?? []).map((id) =>
+          this.fetchJson<Character>(`${STORY_DATA_PATH}/characters/${id}.json`)
+        )
+      )
+    ]);
+
+    return {
+      collections: collections.filter((c): c is Collection => !!c),
+      chapters: chapters.filter((c): c is Chapter => !!c),
+      characters: characters.filter((c): c is Character => !!c)
+    };
+  }
+
+  // ---------- persistence (local draft only) ----------
 
   private persist(): void {
     if (typeof localStorage === 'undefined') return;
@@ -72,9 +167,7 @@ export class StoryDataService {
   }
 
   resetToSampleStory(): void {
-    this._collections.set(structuredClone(SEED_COLLECTIONS));
-    this._chapters.set(structuredClone(SEED_CHAPTERS));
-    this._characters.set(structuredClone(SEED_CHARACTERS));
+    this.applyState(seedState());
     this.persist();
   }
 
@@ -252,32 +345,53 @@ export class StoryDataService {
   // ---------- export: human-readable project files ----------
 
   /**
-   * Generates one JSON file per Collection, Chapter, and Character and
-   * triggers a download for each - matching the project's "generated/"
-   * folder philosophy so the output can be committed straight to Git.
+   * Writes the current draft out as the `story-data/` folder structure the
+   * app reads from: a manifest plus one JSON file per Collection, Chapter,
+   * and Character. Files download individually (staggered slightly so
+   * browsers don't block a burst of downloads) - copy the resulting
+   * `story-data/` folder into your Angular project's `public/story-data/`
+   * and commit it.
    */
   exportProjectFiles(): void {
     if (typeof document === 'undefined') return;
-    const download = (filename: string, data: unknown) => {
+
+    const collections = this._collections();
+    const chapters = this._chapters();
+    const characters = this._characters();
+
+    const manifest: Manifest = {
+      collectionIds: collections.map((c) => c.id),
+      chapterIds: chapters.map((c) => c.id),
+      characterIds: characters.map((c) => c.id)
+    };
+
+    const downloadFile = (filename: string, data: unknown) => {
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = filename;
+      document.body.appendChild(a);
       a.click();
+      a.remove();
       URL.revokeObjectURL(url);
     };
 
-    for (const c of this._collections()) download(`collections/${c.id}.json`, c);
-    for (const c of this._chapters()) download(`chapters/${c.id}.json`, c);
-    for (const c of this._characters()) download(`characters/${c.id}.json`, c);
+    const files: Array<{ filename: string; data: unknown }> = [
+      { filename: `${STORY_DATA_PATH}/manifest.json`, data: manifest },
+      ...collections.map((c) => ({ filename: `${STORY_DATA_PATH}/collections/${c.id}.json`, data: c })),
+      ...chapters.map((c) => ({ filename: `${STORY_DATA_PATH}/chapters/${c.id}.json`, data: c })),
+      ...characters.map((c) => ({ filename: `${STORY_DATA_PATH}/characters/${c.id}.json`, data: c }))
+    ];
+
+    files.forEach((file, i) => {
+      setTimeout(() => downloadFile(file.filename, file.data), i * 150);
+    });
   }
 
   /** Imports a previously-exported full state blob (see exportBundle). */
   importBundle(bundle: StoredState): void {
-    this._collections.set(bundle.collections ?? []);
-    this._chapters.set(bundle.chapters ?? []);
-    this._characters.set(bundle.characters ?? []);
+    this.applyState(bundle);
     this.persist();
   }
 
