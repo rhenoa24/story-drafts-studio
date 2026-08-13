@@ -47,6 +47,10 @@ h1 {
     margin-bottom: 8px;
 }
 
+.row.read-only {
+    margin-bottom: 0;
+}
+
 .swatch {
     width: 18px;
     height: 18px;
@@ -70,4 +74,18 @@ h1 {
 textarea {
     width: 100%;
     resize: vertical;
+}
+
+.char-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.char-description {
+    margin: 8px 0 0;
+    padding-left: 26px;
+    color: var(--ink-soft);
+    font-family: var(--font-body);
+    line-height: 1.5;
 }

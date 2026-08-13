@@ -6,9 +6,7 @@
         </a>
         <nav class="shell-nav">
             <a routerLink="/collections" routerLinkActive="active">Collections</a>
-            @if (editMode.isEditModeEnabled) {
             <a routerLink="/characters" routerLinkActive="active">Characters</a>
-            }
         </nav>
         @if (editMode.isEditModeEnabled) {
         <button class="btn subtle" (click)="export()">Export Project Files</button>

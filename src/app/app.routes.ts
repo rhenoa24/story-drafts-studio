@@ -10,25 +10,24 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'collections'
+    redirectTo: 'collections',
   },
   {
     path: 'collections',
-    component: CollectionListComponent
+    component: CollectionListComponent,
   },
   {
     path: 'characters',
-    canActivate: [editModeGuard],
-    component: CharacterManagerComponent
+    component: CharacterManagerComponent,
   },
   {
     path: 'chapters/:id/edit',
     canActivate: [editModeGuard],
-    component: ChapterEditorComponent
+    component: ChapterEditorComponent,
   },
   {
     path: 'read/:id',
-    component: ReadingModeComponent
+    component: ReadingModeComponent,
   },
-  { path: '**', redirectTo: 'collections' }
+  { path: '**', redirectTo: 'collections' },
 ];
