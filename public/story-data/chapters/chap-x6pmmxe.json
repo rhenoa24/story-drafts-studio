@@ -16,6 +16,13 @@
       "id": "blk-0a290fe",
       "type": "narration",
       "html": "<p>I was born with a strange affliction.</p>"
+    },
+    {
+      "id": "blk-0y1j8c0",
+      "type": "dialogue",
+      "characterId": "char-woy6gi2",
+      "html": "",
+      "align": "left"
     }
   ]
 }

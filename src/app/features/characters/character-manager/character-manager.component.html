@@ -33,7 +33,8 @@
                     <span class="swatch clickable" [style.background]="char.nameplateColor"
                         (click)="colorPicker.click()"></span>
 
-                    <input type="text" class="color-input" [ngModel]="char.nameplateColor"
+                    <input type="text" class="color-input" [style.background]="char.nameplateColor"
+                        [ngModel]="char.nameplateColor"
                         (ngModelChange)="store.updateCharacter(char.id, { nameplateColor: $event })" />
 
                     <input #colorPicker type="color" class="native-color-picker" [value]="char.nameplateColor"
@@ -48,9 +49,12 @@
                 </button>
             </div>
 
-            <textarea rows="2" placeholder="Description..." [ngModel]="char.description"
+            <textarea rows="2" [ngModel]="char.description"
                 (ngModelChange)="store.updateCharacter(char.id, { description: $event })"></textarea>
-            } @else {
+            }
+
+
+            @else {
             <div class="row read-only">
                 <span class="swatch" [style.background]="char.nameplateColor"></span>
                 <span class="char-name">{{ char.name }}</span>
