@@ -1,10 +1,16 @@
+  :host {
+      display: flex;
+      flex: 1;
+  }
+
   .stage {
       flex: 1;
       display: flex;
       flex-direction: column;
       background: var(--stage);
       color: var(--ink);
-      min-height: 0;
+      max-height: 100vh;
+      overflow: auto;
   }
 
   .stage-head {
@@ -17,11 +23,11 @@
       font-size: 13px;
   }
 
-   .toolbar {
-       display: flex;
-       gap: 6px;
-       margin-bottom: 6px;
-   }
+  .toolbar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+  }
 
   .chapter-title {
       flex: 1;
@@ -98,9 +104,7 @@
   }
 
   .narration-beat {
-      font-family: var(--font-body);
-      font-size: 20px;
-      line-height: 1.7;
+      font-family: var(--font-display);
       color: var(--ink-soft);
   }
 
@@ -120,13 +124,10 @@
       text-transform: uppercase;
       padding: 4px 10px;
       border-radius: var(--radius);
-      margin-bottom: 10px;
   }
 
   .dialogue-text {
       font-family: var(--font-body);
-      font-size: 22px;
-      line-height: 1.5;
   }
 
   .end-beat {

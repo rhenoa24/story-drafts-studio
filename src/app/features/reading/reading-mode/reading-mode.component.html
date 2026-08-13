@@ -54,7 +54,7 @@
 
             @if (isComplete()) {
             <div class="beat end-beat" (click)="$event.stopPropagation()">
-                <p class="eyebrow">End of Chapter</p>
+                <!-- <p class="eyebrow">End of Chapter</p> -->
                 @if (nextChapterId(); as nextId) {
                 <a class="btn primary" [routerLink]="['/read', nextId]">Continue to Next Chapter</a>
                 } @else {
