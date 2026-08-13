@@ -7,7 +7,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { NarrationBlock } from '../../../../core/models';
 
@@ -15,7 +15,7 @@ import { NarrationBlock } from '../../../../core/models';
   selector: 'app-narration-block-editor',
   standalone: true,
   templateUrl: './narration-block-editor.component.html',
-  styleUrl: './narration-block-editor.component.scss'
+  styleUrl: './narration-block-editor.component.scss',
 })
 export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
   @Input({ required: true }) block!: NarrationBlock;
