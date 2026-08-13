@@ -1,0 +1,9 @@
+{
+  "id": "col-main",
+  "name": "Main Story",
+  "parentId": "col-root",
+  "chapterIds": [
+    "chap-1",
+    "chap-2"
+  ]
+}
