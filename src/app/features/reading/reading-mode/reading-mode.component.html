@@ -38,17 +38,23 @@
                 </div>
             </div>
             } -->
+
             @case ('narration') {
-            <div class="beat narration-beat" [innerHTML]="block.html"></div>
+            <div class="beat narration-beat" [innerHTML]="trustedHtml(block.html)">
+            </div>
             }
+
             @case ('dialogue') {
             <div class="beat dialogue-beat" [class.right]="block.align === 'right'">
                 <div class="nameplate" [style.background]="characterColor(block.characterId)">
                     {{ characterName(block.characterId) }}
                 </div>
-                <p class="dialogue-text" [innerHTML]="block.html"></p>
+
+                <p class="dialogue-text" [innerHTML]="trustedHtml(block.html)">
+                </p>
             </div>
             }
+
             }
             }
 

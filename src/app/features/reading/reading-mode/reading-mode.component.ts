@@ -1,4 +1,6 @@
 import { Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
+
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StoryDataService } from '../../../core/services/story-data.service';
@@ -16,6 +18,7 @@ import { IconComponent } from '../../../shared/icon/icon.component';
 export class ReadingModeComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly store = inject(StoryDataService);
+  private readonly sanitizer = inject(DomSanitizer);
   readonly editMode = inject(EditModeService);
 
   /** Reactive route param - updates even when Angular reuses this component instance across /read/:id navigations. */
@@ -97,5 +100,9 @@ export class ReadingModeComponent {
 
   characterColor(id: string): string {
     return this.store.characterMap().get(id)?.nameplateColor ?? '#3A5A6E';
+  }
+
+  trustedHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 }
