@@ -5,7 +5,11 @@
             <h1>Characters</h1>
         </div>
         @if (editMode.isEditModeEnabled) {
-        <button class="btn primary" (click)="add()">+ New Character</button>
+        <button class="btn primary" (click)="add()">
+            <app-icon icon="addCharacter"></app-icon>
+            &nbsp;
+            <span>New Character</span>
+        </button>
         }
     </div>
 
@@ -40,7 +44,7 @@
                     (ngModelChange)="store.updateCharacter(char.id, { name: $event })" />
 
                 <button class="btn danger" (click)="store.deleteCharacter(char.id)">
-                    Delete
+                    <app-icon icon="delete"></app-icon>
                 </button>
             </div>
 
