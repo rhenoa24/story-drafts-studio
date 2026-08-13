@@ -1,0 +1,21 @@
+{
+  "id": "chap-x6pmmxe",
+  "title": "Introducio",
+  "collectionIds": [
+    "col-fyz0qm5"
+  ],
+  "blocks": [
+    {
+      "id": "blk-fhfsexk",
+      "type": "scene",
+      "locationName": "Kingdom of Regalia",
+      "timeOfDay": "Gladius",
+      "backgroundLabel": ""
+    },
+    {
+      "id": "blk-0a290fe",
+      "type": "narration",
+      "html": "<p>I was born with a strange affliction.</p>"
+    }
+  ]
+}
