@@ -27,8 +27,11 @@
                 <span class="swatch" [style.background]="char.nameplateColor"></span>
                 <input type="text" [ngModel]="char.name"
                     (ngModelChange)="store.updateCharacter(char.id, { name: $event })" />
+
                 <input type="text" class="color-input" [ngModel]="char.nameplateColor"
+                    [style.background]="char.nameplateColor"
                     (ngModelChange)="store.updateCharacter(char.id, { nameplateColor: $event })" />
+
                 <button class="btn danger" (click)="store.deleteCharacter(char.id)">Delete</button>
             </div>
             <textarea rows="2" placeholder="Description..." [ngModel]="char.description"

@@ -112,7 +112,7 @@ button {
 
     &:hover {
       background: var(--dialogue);
-      color: var(--paper-raised);
+      color: var(--ink);
     }
   }
 }
@@ -120,7 +120,7 @@ button {
 
 
 .btn.danger input[type='text'],
-textarea,
+textarea, input,
 select {
   font-family: var(--font-body);
   font-size: 15px;
@@ -129,10 +129,11 @@ select {
   background: var(--paper-raised);
   color: var(--ink);
   padding: 8px 10px;
+  min-height: 37px;
 }
 
 input[type='text']:focus,
-textarea:focus,
+textarea:focus, input:focus,
 select:focus {
   outline: 2px solid var(--scene);
   outline-offset: 1px;
