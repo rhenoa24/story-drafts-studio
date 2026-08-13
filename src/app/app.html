@@ -1,1 +1,20 @@
-<router-outlet />
+<div class="shell">
+    <header class="shell-header">
+        <a class="brand" routerLink="/collections">
+            <span class="brand-mark">SD</span>
+            <span class="brand-name">Story Drafts Studio</span>
+        </a>
+        <nav class="shell-nav">
+            <a routerLink="/collections" routerLinkActive="active">Collections</a>
+            @if (editMode.isEditModeEnabled) {
+            <a routerLink="/characters" routerLinkActive="active">Characters</a>
+            }
+        </nav>
+        @if (editMode.isEditModeEnabled) {
+        <button class="btn subtle" (click)="export()">Export Project Files</button>
+        }
+    </header>
+    <main class="shell-main">
+        <router-outlet />
+    </main>
+</div>
