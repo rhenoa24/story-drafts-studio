@@ -58,9 +58,7 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
   }
 
   onInput(): void {
-    const cleanedHtml = this.cleanHtml(
-      this.editable.nativeElement.innerHTML
-    );
+    const cleanedHtml = this.cleanHtml(this.editable.nativeElement.innerHTML);
 
     this.patch.emit({
       html: cleanedHtml,
@@ -133,7 +131,7 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
    */
   private clearColorSpansInRange(range: Range): void {
     const colorSpans = Array.from(
-      this.editable.nativeElement.querySelectorAll<HTMLElement>('span[style]')
+      this.editable.nativeElement.querySelectorAll<HTMLElement>('span[style]'),
     ).filter((span) => span.style.color && range.intersectsNode(span));
 
     for (const span of colorSpans) {
@@ -206,7 +204,6 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
     this.onInput();
     this.savedRange = null;
   }
-  // #endregion
 
   private cleanHtml(html: string): string {
     const container = document.createElement('div');
@@ -244,17 +241,10 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
       // Collapse nested color spans
       // --------------------------------------------------
 
-      if (
-        child.tagName === 'SPAN' &&
-        child.style.color &&
-        child.children.length === 1
-      ) {
+      if (child.tagName === 'SPAN' && child.style.color && child.children.length === 1) {
         const inner = child.firstElementChild;
 
-        if (
-          inner instanceof HTMLSpanElement &&
-          inner.style.color
-        ) {
+        if (inner instanceof HTMLSpanElement && inner.style.color) {
           // The inner/latest color wins.
           child.style.color = inner.style.color;
 
@@ -268,10 +258,7 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
       }
 
       // Remove useless <font>/<span> wrappers that carry no attributes.
-      if (
-        (child.tagName === 'FONT' || child.tagName === 'SPAN') &&
-        child.attributes.length === 0
-      ) {
+      if ((child.tagName === 'FONT' || child.tagName === 'SPAN') && child.attributes.length === 0) {
         this.unwrapElement(child);
         continue;
       }
@@ -296,13 +283,11 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
     }
 
     while (element.firstChild) {
-      parent.insertBefore(
-        element.firstChild,
-        element
-      );
+      parent.insertBefore(element.firstChild, element);
     }
 
     element.remove();
   }
 
+  // #endregion
 }
