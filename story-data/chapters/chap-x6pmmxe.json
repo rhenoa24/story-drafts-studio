@@ -9,7 +9,7 @@
       "id": "blk-fhfsexk",
       "type": "scene",
       "locationName": "Kingdom of Regalia",
-      "timeOfDay": "Gladius",
+      "pointOfView": "Gladius",
       "backgroundLabel": ""
     },
     {
