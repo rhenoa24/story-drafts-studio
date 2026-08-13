@@ -10,11 +10,12 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DialogueBlock, Character } from '../../../../core/models';
+import { IconComponent } from '../../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-dialogue-block-editor',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, IconComponent],
   templateUrl: './dialogue-block-editor.component.html',
   styleUrl: './dialogue-block-editor.component.scss',
 })

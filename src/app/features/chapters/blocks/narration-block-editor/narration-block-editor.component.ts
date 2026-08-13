@@ -10,12 +10,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NarrationBlock } from '../../../../core/models';
+import { IconComponent } from '../../../../shared/icon/icon.component';
 
 @Component({
   selector: 'app-narration-block-editor',
   standalone: true,
   templateUrl: './narration-block-editor.component.html',
   styleUrl: './narration-block-editor.component.scss',
+  imports: [IconComponent],
 })
 export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
   @Input({ required: true }) block!: NarrationBlock;

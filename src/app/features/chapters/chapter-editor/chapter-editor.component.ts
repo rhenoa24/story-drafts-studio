@@ -6,11 +6,12 @@ import { BlockType } from '../../../core/models';
 import { SceneBlockEditorComponent } from '../blocks/scene-block-editor/scene-block-editor.component';
 import { NarrationBlockEditorComponent } from '../blocks/narration-block-editor/narration-block-editor.component';
 import { DialogueBlockEditorComponent } from '../blocks/dialogue-block-editor/dialogue-block-editor.component';
+import { IconComponent } from '../../../shared/icon/icon.component';
 
 const BLOCK_LABEL: Record<BlockType, string> = {
   scene: 'Scene',
   narration: 'Narration',
-  dialogue: 'Dialogue'
+  dialogue: 'Dialogue',
 };
 
 @Component({
@@ -21,10 +22,11 @@ const BLOCK_LABEL: Record<BlockType, string> = {
     RouterLink,
     SceneBlockEditorComponent,
     NarrationBlockEditorComponent,
-    DialogueBlockEditorComponent
+    DialogueBlockEditorComponent,
+    IconComponent,
   ],
   templateUrl: './chapter-editor.component.html',
-  styleUrl: './chapter-editor.component.scss'
+  styleUrl: './chapter-editor.component.scss',
 })
 export class ChapterEditorComponent {
   readonly BLOCK_LABEL = BLOCK_LABEL;
@@ -32,7 +34,7 @@ export class ChapterEditorComponent {
 
   constructor(
     private readonly route: ActivatedRoute,
-    readonly store: StoryDataService
+    readonly store: StoryDataService,
   ) {
     this.chapterId = this.route.snapshot.paramMap.get('id')!;
   }

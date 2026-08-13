@@ -18,8 +18,8 @@ import { ICONS } from './icons';
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 1em;
-      height: 1em;
+      width: 1rem;
+      height: 1rem;
       line-height: 0;
       flex-shrink: 0;
     }

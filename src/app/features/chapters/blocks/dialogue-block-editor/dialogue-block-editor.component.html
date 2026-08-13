@@ -28,16 +28,14 @@
     <span class="eyebrow">Line</span>
     <div class="toolbar">
         <button type="button" class="btn subtle" (mousedown)="$event.preventDefault()" (click)="exec('bold')">
-            <strong>B</strong>
+            <app-icon icon="bold"></app-icon>
         </button>
         <button type="button" class="btn subtle" (mousedown)="$event.preventDefault()" (click)="exec('italic')">
-            <em>I</em>
+            <app-icon icon="italic"></app-icon>
         </button>
         <button type="button" class="btn subtle" (mousedown)="$event.preventDefault()" (click)="exec('underline')">
-            <u>U</u>
+            <app-icon icon="underline"></app-icon>
         </button>
     </div>
     <div #editable class="editable" contenteditable="true" (input)="onInput()"></div>
-
-    <!-- <div #editable class="editable" contenteditable="true" [innerHTML]="block.html" (input)="onInput()"></div> -->
 </div>

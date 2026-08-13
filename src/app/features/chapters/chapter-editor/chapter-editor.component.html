@@ -2,13 +2,17 @@
 <div class="page">
     <div class="page-head">
         <div>
-            <span class="eyebrow">Editing Chapter</span>
+            <span class="eyebrow">Editing Chapter</span><br>
             <input type="text" class="title-input" [ngModel]="chapter.title"
                 (ngModelChange)="store.renameChapter(chapter.id, $event)" />
         </div>
         <div class="page-head-actions">
-            <a class="btn subtle" routerLink="/">← Collections</a>
-            <a class="btn primary" [routerLink]="['/read', chapter.id]">Preview in Reading Mode</a>
+            <a class="btn subtle" routerLink="/">
+                <app-icon icon="arrowLeft"></app-icon>
+            </a>
+            <a class="btn primary" [routerLink]="['/read', chapter.id]">
+                <app-icon icon="read"></app-icon>
+            </a>
         </div>
     </div>
 
@@ -19,15 +23,15 @@
             <div class="block-body">
                 <div class="block-toolbar">
                     <button class="btn subtle" [disabled]="i === 0" (click)="store.moveBlock(chapter.id, i, i - 1)">
-                        ↑
+                        <app-icon icon="arrowUp"></app-icon>
                     </button>
                     <button class="btn subtle" [disabled]="i === chapter.blocks.length - 1"
                         (click)="store.moveBlock(chapter.id, i, i + 1)">
-                        ↓
+                        <app-icon icon="arrowDown"></app-icon>
                     </button>
                     <span class="spacer"></span>
                     <button class="btn danger" (click)="store.removeBlock(chapter.id, block.id)">
-                        Remove
+                        <app-icon icon="delete"></app-icon>
                     </button>
                 </div>
 
