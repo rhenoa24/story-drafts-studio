@@ -2,11 +2,25 @@
     <button type="button" class="btn subtle" (mousedown)="$event.preventDefault()" (click)="exec('bold')">
         <app-icon icon="bold"></app-icon>
     </button>
+
     <button type="button" class="btn subtle" (mousedown)="$event.preventDefault()" (click)="exec('italic')">
         <app-icon icon="italic"></app-icon>
     </button>
+
     <button type="button" class="btn subtle" (mousedown)="$event.preventDefault()" (click)="exec('underline')">
         <app-icon icon="underline"></app-icon>
     </button>
+
+    <label class="color-picker btn subtle" title="Text color" (mousedown)="saveSelection()">
+        <span class="color-swatch" [style.backgroundColor]="selectedColor"></span>
+
+        <input type="color" [value]="selectedColor" (change)="setTextColor($event)" />
+    </label>
+
+    <button type="button" class="btn subtle" title="Clear text color" (mousedown)="$event.preventDefault()"
+        (click)="clearTextColor()">
+        <app-icon icon="eraser"></app-icon>
+    </button>
 </div>
+
 <div #editable class="editable" contenteditable="true" (input)="onInput()"></div>

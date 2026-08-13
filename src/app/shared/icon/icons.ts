@@ -64,4 +64,8 @@ export const ICONS: Record<string, IconDefinition> = {
     viewBox: '0 -960 960 960',
     path: 'M200-120v-80h560v80H200Zm123-223q-56-63-56-167v-330h103v336q0 56 28 91t82 35q54 0 82-35t28-91v-336h103v330q0 104-56 167t-157 63q-101 0-157-63Z',
   },
+  eraser: {
+    viewBox: '0 -960 960 960',
+    path: 'M690-240h190v80H610l80-80Zm-500 80L48-302l552-572 312 312-392 402H190Z',
+  },
 };
