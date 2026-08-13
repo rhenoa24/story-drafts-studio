@@ -18,8 +18,8 @@
     @if (activeScene(); as scene) {
     <div class="scene-strip">
         <span class="eyebrow">{{ scene.locationName }}</span>
-        @if (scene.timeOfDay) {
-        <span class="eyebrow dim">{{ scene.timeOfDay }}</span>
+        @if (scene.pointOfView) {
+        <span class="eyebrow dim">{{ scene.pointOfView }}</span>
         }
     </div>
     }
@@ -32,8 +32,8 @@
             <div class="beat scene-beat">
                 <div class="scene-card">
                     <h2>{{ block.locationName }}</h2>
-                    @if (block.timeOfDay) {
-                    <p class="dim">{{ block.timeOfDay }}</p>
+                    @if (block.pointOfView) {
+                    <p class="dim">{{ block.pointOfView }}</p>
                     }
                 </div>
             </div>

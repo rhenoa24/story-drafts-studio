@@ -9,7 +9,7 @@ export interface BaseBlock {
 export interface SceneBlock extends BaseBlock {
   type: 'scene';
   locationName: string;
-  timeOfDay?: string;
+  pointOfView?: string;
   backgroundLabel?: string;
 }
 
@@ -34,7 +34,7 @@ export type Block = SceneBlock | NarrationBlock | DialogueBlock;
 export function createEmptyBlock(type: BlockType, id: string): Block {
   switch (type) {
     case 'scene':
-      return { id, type, locationName: 'New Location', timeOfDay: '', backgroundLabel: '' };
+      return { id, type, locationName: 'New Location', pointOfView: '', backgroundLabel: '' };
     case 'narration':
       return { id, type, html: '<p>New narration...</p>' };
     case 'dialogue':
