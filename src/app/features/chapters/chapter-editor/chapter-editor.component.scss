@@ -100,7 +100,75 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 4px;
+}
+
+.insert-slot {
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insert-slot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px dashed transparent;
+  transition: border-color 0.15s;
+}
+
+.insert-slot:hover::before,
+.insert-slot:focus-within::before {
+  border-color: var(--rule);
+}
+
+.insert-toggle {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    background 0.15s,
+    color 0.15s;
+  z-index: 1;
+}
+
+.insert-slot:hover .insert-toggle,
+.insert-slot:focus-within .insert-toggle,
+.insert-toggle:focus-visible {
+  opacity: 1;
+}
+
+.insert-toggle:hover {
+  background: var(--scene);
+  color: #fff;
+  border-color: var(--scene);
+}
+
+.insert-menu {
+  position: absolute;
+  top: 26px;
+  display: flex;
+  gap: 6px;
+  background: var(--paper-raised);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.14);
+  z-index: 2;
 }
 
 .block-card {

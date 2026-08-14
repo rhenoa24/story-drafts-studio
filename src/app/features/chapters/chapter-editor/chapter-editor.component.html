@@ -48,7 +48,25 @@
         }
     </div>
 
+    <ng-template #insertSlot let-atIndex="atIndex">
+        <li class="insert-slot">
+            <button type="button" class="insert-toggle" (click)="toggleInsertMenu(atIndex)" title="Insert block here">
+                <app-icon icon="add"></app-icon>
+            </button>
+            @if (isInsertMenuOpen(atIndex)) {
+            <div class="insert-menu">
+                <button class="btn scene" (click)="insertBlockAt('scene', atIndex)">+ Scene</button>
+                <button class="btn narration" (click)="insertBlockAt('narration', atIndex)">+ Narration</button>
+                <button class="btn dialogue" (click)="insertBlockAt('dialogue', atIndex)">+ Dialogue</button>
+            </div>
+            }
+        </li>
+    </ng-template>
+
     <ul class="blocks">
+        @if (chapter.blocks.length) {
+        <ng-container [ngTemplateOutlet]="insertSlot" [ngTemplateOutletContext]="{ atIndex: 0 }" />
+        }
         @for (block of chapter.blocks; track block.id; let i = $index) {
         <li class="block-card" [attr.data-type]="block.type">
             <div class="spine">{{ BLOCK_LABEL[block.type] }}</div>
@@ -81,6 +99,7 @@
                 }
             </div>
         </li>
+        <ng-container [ngTemplateOutlet]="insertSlot" [ngTemplateOutletContext]="{ atIndex: i + 1 }" />
         }
     </ul>
 

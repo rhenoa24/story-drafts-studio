@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StoryDataService } from '../../../core/services/story-data.service';
@@ -19,6 +20,7 @@ const BLOCK_LABEL: Record<BlockType, string> = {
   standalone: true,
   imports: [
     FormsModule,
+    NgTemplateOutlet,
     RouterLink,
     SceneBlockEditorComponent,
     NarrationBlockEditorComponent,
@@ -45,6 +47,22 @@ export class ChapterEditorComponent {
 
   add(type: BlockType): void {
     this.store.addBlock(this.chapterId, type);
+  }
+
+  /** Which "insert here" slot (by target index) currently has its type-picker open, if any. */
+  private readonly _openInsertIndex = signal<number | null>(null);
+
+  toggleInsertMenu(atIndex: number): void {
+    this._openInsertIndex.update((current) => (current === atIndex ? null : atIndex));
+  }
+
+  isInsertMenuOpen(atIndex: number): boolean {
+    return this._openInsertIndex() === atIndex;
+  }
+
+  insertBlockAt(type: BlockType, atIndex: number): void {
+    this.store.addBlock(this.chapterId, type, atIndex);
+    this._openInsertIndex.set(null);
   }
 
   /** Collections this chapter currently belongs to. */
