@@ -15,14 +15,152 @@
     {
       "id": "blk-0a290fe",
       "type": "narration",
-      "html": "<p>I was born with a strange affliction.</p>"
+      "html": "I was born with an affliction of the soul."
     },
     {
-      "id": "blk-0y1j8c0",
-      "type": "dialogue",
-      "characterId": "char-woy6gi2",
-      "html": "",
-      "align": "left"
+      "id": "blk-w8xaxsk",
+      "type": "narration",
+      "html": "<p>That was the best way the kingdom's physicians and apothecaries could describe it. Having no explanation for it, even in arcane terms, only fuels its strangeness.</p>"
+    },
+    {
+      "id": "blk-ldlqvc6",
+      "type": "narration",
+      "html": "Such a mysterious matter…"
+    },
+    {
+      "id": "blk-8xyuol8",
+      "type": "narration",
+      "html": "From their accounts, my mother suffered from something unexplainable. Something that could only be deduced to be an affliction her soul was born with, for it was no ache of the body."
+    },
+    {
+      "id": "blk-pqc2z6a",
+      "type": "narration",
+      "html": "Something I could possibly have inherited in some way."
+    },
+    {
+      "id": "blk-33f56sl",
+      "type": "narration",
+      "html": "I was born with a deep, indescribable <span style=\"color: rgb(176, 119, 36);\">sorrow</span>."
+    },
+    {
+      "id": "blk-i4eiet3",
+      "type": "narration",
+      "html": "It is strange, writing of it in such a way, when there is absolutely nothing for me to be deeply sorrowful about."
+    },
+    {
+      "id": "blk-o8enaoe",
+      "type": "narration",
+      "html": "I have been asked if it concerns my mother's passing.&nbsp;"
+    },
+    {
+      "id": "blk-0cl4u0g",
+      "type": "narration",
+      "html": "I may sound like a cruel child, but I barely remember my mother at all. I was but an infant when she nursed me, before it eventually came to pass.&nbsp;"
+    },
+    {
+      "id": "blk-oven6zt",
+      "type": "narration",
+      "html": "I do not painfully yearn for her, for I am content with my father's hard work in nurturing me in both roles."
+    },
+    {
+      "id": "blk-vidcw9t",
+      "type": "narration",
+      "html": "It is a shame that I could not grow up with her, but all I feel is gratitude. For being born, if nothing else, and for that, I have her to thank. There is not a tinge of deep sadness in the way I feel toward the late Queen Aegis."
+    },
+    {
+      "id": "blk-64ftv2n",
+      "type": "narration",
+      "html": "So why am I <span style=\"color: rgb(178, 120, 36);\">grieving</span>?"
+    },
+    {
+      "id": "blk-6ctbew5",
+      "type": "narration",
+      "html": "This affliction has caused me to spend most of my years within the castle. I completed my studies and trained here, mostly to avoid people asking about it too much.&nbsp;"
+    },
+    {
+      "id": "blk-b0ozwlb",
+      "type": "narration",
+      "html": "No matter how many times they do, I have no answer as to why."
+    },
+    {
+      "id": "blk-v8cpell",
+      "type": "narration",
+      "html": "My father, who worries too much at times, has indulged me in this introverted lifestyle since childhood. I did not feel alone, either, for I was always in good care of the maids, cooks, and knights.&nbsp;"
+    },
+    {
+      "id": "blk-tdls3rg",
+      "type": "narration",
+      "html": "Over the years, I have inadvertently cultivated an image of a mysterious crown prince."
+    },
+    {
+      "id": "blk-hfe9vuv",
+      "type": "narration",
+      "html": "Another reason is the sudden waves of <span style=\"color: rgb(172, 116, 35);\">loneliness</span>, which often leave me in tears. With all that I have said earlier, this does not make sense at all. There is an ache in my heart, yet my mind is filled with nothing but confusion."
+    },
+    {
+      "id": "blk-rqocev1",
+      "type": "narration",
+      "html": "It happens at certain times, yet it can be so utterly random that I have found no pattern to its nature. I do not wish to be caught in such a state by our people. It is distressing enough even to me."
+    },
+    {
+      "id": "blk-o2kvtq3",
+      "type": "narration",
+      "html": "Lastly, which I do indulge in often, is the drowsiness that follows such episodes. Much like an infant peacefully falling asleep after a fit of crying, I often end up the same way. I become too tired to move, and would rather remain in bed and sleep."
+    },
+    {
+      "id": "blk-io50sr2",
+      "type": "narration",
+      "html": "And as I sleep, I dream."
+    },
+    {
+      "id": "blk-7d8tx84",
+      "type": "narration",
+      "html": "It is a hazy dream that I cannot describe, no matter how many times I have seen it.&nbsp;"
+    },
+    {
+      "id": "blk-mar5tr8",
+      "type": "narration",
+      "html": "It is like a stage play performed over and over again, familiar yet impossible to recall."
+    },
+    {
+      "id": "blk-dthwxvk",
+      "type": "narration",
+      "html": "All I remember is the cool breeze upon a summer's day.&nbsp;"
+    },
+    {
+      "id": "blk-ns0u7xt",
+      "type": "narration",
+      "html": "The scent of tall grass dampened by the morning dew.&nbsp;"
+    },
+    {
+      "id": "blk-7dmb5st",
+      "type": "narration",
+      "html": "The sound of branches and leaves rustling in the wind."
+    },
+    {
+      "id": "blk-7mpnbdp",
+      "type": "narration",
+      "html": "And a flicker of <span style=\"color: rgb(180, 122, 37);\">gold</span> fluttering within it."
+    },
+    {
+      "id": "blk-fd96ntj",
+      "type": "narration",
+      "html": "Whatever it is, I cannot picture it myself. It is nothing more than a blur, perhaps no more than a blank canvas."
+    },
+    {
+      "id": "blk-iqedneo",
+      "type": "narration",
+      "html": "Yet each time, my heart is soothed by this dream."
+    },
+    {
+      "id": "blk-cr2f11s",
+      "type": "narration",
+      "html": "And when I awaken in tears, it is as though I have witnessed something so breathtakingly <span style=\"color: rgb(179, 121, 37);\">beautiful</span>."
+    },
+    {
+      "id": "blk-elnuh2a",
+      "type": "narration",
+      "html": "So I find myself spending most of my time in slumber."
     }
   ]
 }

@@ -35,10 +35,27 @@ export class ReadingModeComponent {
     // same component instance), reset progress and jump the feed back to the top.
     effect(() => {
       this.chapterId();
-      this.revealedCount.set(1);
+      this.revealedCount.set(this.normalizeCount(1));
       const el = this.scroller?.nativeElement;
       if (el) el.scrollTop = 0;
     });
+  }
+
+  /**
+   * Scene blocks render no card of their own in the feed - they only set the
+   * backdrop strip - so they shouldn't cost a click or sit alone on screen.
+   * Given a candidate reveal count, extends it forward past any scene block
+   * (or run of consecutive scene blocks) that would otherwise be the last
+   * thing revealed, so a scene always arrives together with the block after it.
+   */
+  private normalizeCount(count: number): number {
+    const chapter = this.chapter();
+    if (!chapter) return count;
+    let n = count;
+    while (n < chapter.blocks.length && chapter.blocks[n - 1]?.type === 'scene') {
+      n++;
+    }
+    return n;
   }
 
   chapter() {
@@ -82,7 +99,7 @@ export class ReadingModeComponent {
     const chapter = this.chapter();
     if (!chapter) return;
     if (this.revealedCount() < chapter.blocks.length) {
-      this.revealedCount.update((n) => n + 1);
+      this.revealedCount.update((n) => this.normalizeCount(n + 1));
       this.scrollToBottom();
     }
   }

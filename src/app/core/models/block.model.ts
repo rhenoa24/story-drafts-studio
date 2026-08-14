@@ -36,7 +36,7 @@ export function createEmptyBlock(type: BlockType, id: string): Block {
     case 'scene':
       return { id, type, locationName: 'New Location', pointOfView: '', backgroundLabel: '' };
     case 'narration':
-      return { id, type, html: '<p>New narration...</p>' };
+      return { id, type, html: '' };
     case 'dialogue':
       return { id, type, characterId: '', html: '', align: 'left' };
   }
