@@ -19,9 +19,21 @@
   --font-display: 'Libre Baskerville', serif;
   --font-body: 'Crimson Text', serif;
   --font-mono: 'David Libre', serif;
+  --font-glyph: 'Glyphabet';
 
   --radius: 3px;
   color-scheme: dark;
+
+  // logo color
+  --gold-top: #fcdf04;
+  --gold-bottom: #fd6c05;
+}
+
+@font-face {
+  font-family: 'Glyphabet';
+  src: url('/glyphabet.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
