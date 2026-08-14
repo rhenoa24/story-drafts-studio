@@ -16,6 +16,38 @@
         </div>
     </div>
 
+    <div class="collections-panel">
+        <span class="eyebrow">In Collections</span>
+        <div class="collection-chips">
+            @for (col of collectionsFor(chapter.collectionIds); track col.id) {
+            <span class="chip">
+                {{ collectionPath(col.id) }}
+                <button type="button" class="chip-remove" (click)="unlinkFromCollection(col.id)"
+                    title="Remove from this collection">×</button>
+            </span>
+            } @empty {
+            <span class="chip-empty">Not in any collection (orphaned)</span>
+            }
+        </div>
+        @if (availableCollectionsFor(chapter.collectionIds); as available) {
+        @if (available.length) {
+        <div class="collection-add">
+            <select #collectionSelect>
+                <option value="">Add to collection…</option>
+                @for (col of available; track col.id) {
+                <option [value]="col.id">{{ collectionPath(col.id) }}</option>
+                }
+            </select>
+            <button class="btn subtle" (click)="linkToCollection(collectionSelect)">
+                <app-icon icon="add"></app-icon>
+                &nbsp;
+                <span>Add</span>
+            </button>
+        </div>
+        }
+        }
+    </div>
+
     <ul class="blocks">
         @for (block of chapter.blocks; track block.id; let i = $index) {
         <li class="block-card" [attr.data-type]="block.type">

@@ -4,6 +4,7 @@ import { editModeGuard } from './core/guards/edit-mode.guard';
 import { CollectionListComponent } from './features/collections/collection-list/collection-list.component';
 import { CharacterManagerComponent } from './features/characters/character-manager/character-manager.component';
 import { ChapterEditorComponent } from './features/chapters/chapter-editor/chapter-editor.component';
+import { ChapterListComponent } from './features/chapters/chapter-list/chapter-list.component';
 import { ReadingModeComponent } from './features/reading/reading-mode/reading-mode.component';
 
 export const routes: Routes = [
@@ -28,6 +29,10 @@ export const routes: Routes = [
   {
     path: 'read/:id',
     component: ReadingModeComponent,
+  },
+  {
+    path: 'chapters',
+    component: ChapterListComponent,
   },
   { path: '**', redirectTo: 'collections' },
 ];

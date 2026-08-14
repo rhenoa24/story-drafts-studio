@@ -54,6 +54,11 @@ function seedState(): StoredState {
  * `exportProjectFiles()` writes the current draft back out as that same
  * `story-data/` file structure so it can be copied into `public/story-data/`
  * and committed to Git.
+ *
+ * A chapter's `collectionIds` and each `Collection.chapterIds` are kept as
+ * two sides of the same relationship. Every mutator below that touches one
+ * side updates the other in the same call, so callers never need to
+ * reconcile them manually.
  */
 @Injectable({ providedIn: 'root' })
 export class StoryDataService {
@@ -192,11 +197,32 @@ export class StoryDataService {
     this._collections.update((all) =>
       all.filter((c) => c.id !== id).map((c) => (c.parentId === id ? { ...c, parentId: null } : c)),
     );
+    // Chapters that referenced this collection would otherwise keep a dangling
+    // id in `collectionIds` forever - drop it so orphan tracking stays accurate.
+    this._chapters.update((all) =>
+      all.map((c) =>
+        c.collectionIds.includes(id)
+          ? { ...c, collectionIds: c.collectionIds.filter((cid) => cid !== id) }
+          : c,
+      ),
+    );
     this.persist();
   }
 
   childCollectionsOf(parentId: string | null): Collection[] {
     return this._collections().filter((c) => c.parentId === parentId);
+  }
+
+  /** Breadcrumb-style display path, e.g. "Fantasy / Character Stories". */
+  collectionPath(id: string): string {
+    const names: string[] = [];
+    let current = this._collections().find((c) => c.id === id);
+    while (current) {
+      names.unshift(current.name);
+      const parentId: string | null = current.parentId;
+      current = parentId ? this._collections().find((c) => c.id === parentId) : undefined;
+    }
+    return names.join(' / ');
   }
 
   moveChapterInCollection(collectionId: string, fromIndex: number, toIndex: number): void {
@@ -255,6 +281,19 @@ export class StoryDataService {
     return chapter;
   }
 
+  /** Creates a chapter that isn't in any collection yet. Use `linkChapterToCollection` later to place it. */
+  createOrphanChapter(title: string): Chapter {
+    const chapter: Chapter = {
+      id: newId('chap'),
+      title,
+      collectionIds: [],
+      blocks: [],
+    };
+    this._chapters.update((all) => [...all, chapter]);
+    this.persist();
+    return chapter;
+  }
+
   renameChapter(id: string, title: string): void {
     this._chapters.update((all) => all.map((c) => (c.id === id ? { ...c, title } : c)));
     this.persist();
@@ -275,8 +314,51 @@ export class StoryDataService {
     return col.chapterIds.map((id) => byId.get(id)).filter((c): c is Chapter => !!c);
   }
 
+  /** Chapters that don't belong to any collection - reachable only from the Chapters tab. */
+  orphanedChapters(): Chapter[] {
+    return this._chapters().filter((c) => c.collectionIds.length === 0);
+  }
+
   chapter(id: string): Chapter | undefined {
     return this._chapters().find((c) => c.id === id);
+  }
+
+  /** Adds an existing chapter to a collection (a chapter may be in several). No-op if already linked. */
+  linkChapterToCollection(chapterId: string, collectionId: string): void {
+    this._chapters.update((all) =>
+      all.map((c) =>
+        c.id === chapterId && !c.collectionIds.includes(collectionId)
+          ? { ...c, collectionIds: [...c.collectionIds, collectionId] }
+          : c,
+      ),
+    );
+    this._collections.update((all) =>
+      all.map((c) =>
+        c.id === collectionId && !c.chapterIds.includes(chapterId)
+          ? { ...c, chapterIds: [...c.chapterIds, chapterId] }
+          : c,
+      ),
+    );
+    this.persist();
+  }
+
+  /** Removes a chapter from a collection without deleting the chapter itself. It may become orphaned. */
+  unlinkChapterFromCollection(chapterId: string, collectionId: string): void {
+    this._chapters.update((all) =>
+      all.map((c) =>
+        c.id === chapterId
+          ? { ...c, collectionIds: c.collectionIds.filter((id) => id !== collectionId) }
+          : c,
+      ),
+    );
+    this._collections.update((all) =>
+      all.map((c) =>
+        c.id === collectionId
+          ? { ...c, chapterIds: c.chapterIds.filter((id) => id !== chapterId) }
+          : c,
+      ),
+    );
+    this.persist();
   }
 
   // ---------- blocks ----------

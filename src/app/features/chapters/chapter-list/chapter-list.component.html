@@ -1,0 +1,71 @@
+<div class="page">
+    <div class="page-head">
+        <div>
+            <span class="eyebrow">Library</span>
+            <h1>Chapters</h1>
+        </div>
+        @if (editMode.isEditModeEnabled) {
+        <button class="btn primary" (click)="addOrphanChapter()">
+            <app-icon icon="add"></app-icon>
+            &nbsp;
+            <span>New Chapter</span>
+        </button>
+        }
+    </div>
+
+    @if (chapters.length === 0) {
+    <p class="empty">No chapters yet.</p>
+    } @else {
+
+    @if (orphanedChapters.length) {
+    <section class="section">
+        <p class="eyebrow">Orphaned <span class="count">({{ orphanedChapters.length }})</span></p>
+        <p class="hint">Not in any collection yet. Open a chapter to add it to one.</p>
+        <ul class="chapter-list">
+            @for (chapter of orphanedChapters; track chapter.id) {
+            <li class="chapter-row">
+                <span class="badge">Orphaned</span>
+                <span class="chapter-title">{{ chapter.title }}</span>
+                <span class="chapter-actions">
+                    @if (editMode.isEditModeEnabled) {
+                    <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">
+                        <app-icon icon="edit"></app-icon>
+                    </a>
+                    <button class="btn danger" (click)="remove(chapter)">
+                        <app-icon icon="delete"></app-icon>
+                    </button>
+                    }
+                    <a class="btn subtle" [routerLink]="['/read', chapter.id]">Read</a>
+                </span>
+            </li>
+            }
+        </ul>
+    </section>
+    }
+
+    <section class="section">
+        <p class="eyebrow">All Chapters</p>
+        <ul class="chapter-list">
+            @for (chapter of chapters; track chapter.id) {
+            <li class="chapter-row">
+                <span class="chapter-title">{{ chapter.title }}</span>
+                @if (collectionPathsFor(chapter); as paths) {
+                <span class="chapter-collections">{{ paths }}</span>
+                }
+                <span class="chapter-actions">
+                    @if (editMode.isEditModeEnabled) {
+                    <a class="btn subtle" [routerLink]="['/chapters', chapter.id, 'edit']">
+                        <app-icon icon="edit"></app-icon>
+                    </a>
+                    <button class="btn danger" (click)="remove(chapter)">
+                        <app-icon icon="delete"></app-icon>
+                    </button>
+                    }
+                    <a class="btn subtle" [routerLink]="['/read', chapter.id]">Read</a>
+                </span>
+            </li>
+            }
+        </ul>
+    </section>
+    }
+</div>

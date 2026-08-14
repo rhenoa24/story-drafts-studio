@@ -84,6 +84,7 @@ button {
   transition:
     background 0.15s ease,
     color 0.15s ease;
+  align-items: center;
 
   &:hover {
     background: var(--ink);

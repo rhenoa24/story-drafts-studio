@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { StoryDataService } from '../../../core/services/story-data.service';
-import { BlockType } from '../../../core/models';
+import { BlockType, Collection } from '../../../core/models';
 import { SceneBlockEditorComponent } from '../blocks/scene-block-editor/scene-block-editor.component';
 import { NarrationBlockEditorComponent } from '../blocks/narration-block-editor/narration-block-editor.component';
 import { DialogueBlockEditorComponent } from '../blocks/dialogue-block-editor/dialogue-block-editor.component';
@@ -45,5 +45,30 @@ export class ChapterEditorComponent {
 
   add(type: BlockType): void {
     this.store.addBlock(this.chapterId, type);
+  }
+
+  /** Collections this chapter currently belongs to. */
+  collectionsFor(collectionIds: string[]): Collection[] {
+    return this.store.collections().filter((c) => collectionIds.includes(c.id));
+  }
+
+  /** Collections this chapter could still be added to. */
+  availableCollectionsFor(collectionIds: string[]): Collection[] {
+    return this.store.collections().filter((c) => !collectionIds.includes(c.id));
+  }
+
+  collectionPath(id: string): string {
+    return this.store.collectionPath(id);
+  }
+
+  linkToCollection(select: HTMLSelectElement): void {
+    const collectionId = select.value;
+    if (!collectionId) return;
+    this.store.linkChapterToCollection(this.chapterId, collectionId);
+    select.value = '';
+  }
+
+  unlinkFromCollection(collectionId: string): void {
+    this.store.unlinkChapterFromCollection(this.chapterId, collectionId);
   }
 }

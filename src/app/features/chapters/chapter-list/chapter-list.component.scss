@@ -1,0 +1,94 @@
+.page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+    width: 100%;
+}
+
+.page-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 16px;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+.empty {
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+.section {
+    margin-bottom: 32px;
+}
+
+.section h2 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px;
+}
+
+.count {
+    color: var(--ink-soft);
+    font-weight: 400;
+}
+
+.hint {
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin: 0 0 12px;
+}
+
+.chapter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.chapter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px dashed var(--rule);
+}
+
+.chapter-row:last-child {
+    border-bottom: none;
+}
+
+.chapter-title {
+    font-family: var(--font-body);
+    flex: 1;
+}
+
+.chapter-collections {
+    color: var(--ink-soft);
+    font-size: 12px;
+}
+
+.chapter-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--ink-soft);
+    border-radius: var(--radius);
+    padding: 2px 8px;
+}
