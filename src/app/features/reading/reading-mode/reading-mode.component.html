@@ -2,7 +2,7 @@
 <div class="stage">
     <div class="stage-head">
         <div class="toolbar">
-            <a class="btn subtle" routerLink="/collections">
+            <a class="btn subtle" routerLink="/">
                 <app-icon icon="arrowLeft"></app-icon>
             </a>
             @if (editMode.isEditModeEnabled) {
@@ -65,7 +65,7 @@
                 @if (nextChapterId(); as nextId) {
                 <a class="btn primary" [routerLink]="['/read', nextId]">Continue to Next Chapter</a>
                 } @else {
-                <a class="btn primary" routerLink="/collections">Return to Collection</a>
+                <a class="btn primary" routerLink="/">Return to Collection</a>
                 }
             </div>
             }

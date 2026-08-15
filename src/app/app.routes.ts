@@ -11,10 +11,6 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'collections',
-  },
-  {
-    path: 'collections',
     component: CollectionListComponent,
   },
   {

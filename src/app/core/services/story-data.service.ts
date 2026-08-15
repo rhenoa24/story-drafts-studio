@@ -140,7 +140,7 @@ export class StoryDataService {
     const [collections, chapters, characters] = await Promise.all([
       Promise.all(
         (manifest.collectionIds ?? []).map((id) =>
-          this.fetchJson<Collection>(`${STORY_DATA_PATH}/collections/${id}.json`),
+          this.fetchJson<Collection>(`${STORY_DATA_PATH}/${id}.json`),
         ),
       ),
       Promise.all(
