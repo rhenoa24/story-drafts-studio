@@ -106,9 +106,32 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
   }
 
   /**
-   * Focuses the editor, restores the saved selection, and returns its range
-   * - or null if there's no selection or it's collapsed (nothing to act on).
-   * Shared by applyColorToSelection() and clearTextColor().
+   * Reads the *live* selection - no restore. Used by clearTextColor(), which
+   * (like bold/italic/underline) relies on the toolbar button's mousedown
+   * preventDefault() to keep the real selection intact. Restoring the saved
+   * range here was the bug: it clobbered the live selection with whatever
+   * was last saved by the color picker, so clearing could silently act on
+   * the wrong word.
+   */
+  private getCurrentSelectionRange(): Range | null {
+    this.editable.nativeElement.focus();
+
+    const selection = window.getSelection();
+
+    if (!selection || selection.rangeCount === 0) {
+      return null;
+    }
+
+    const range = selection.getRangeAt(0);
+
+    return range.collapsed ? null : range;
+  }
+
+  /**
+   * Restores the range saved before the native color <input> stole focus,
+   * then returns it. Only applyColorToSelection() needs this - the native
+   * color picker dialog clears the DOM selection in a way mousedown
+   * preventDefault() can't protect against.
    */
   private getRestoredSelectionRange(): Range | null {
     this.editable.nativeElement.focus();
@@ -191,7 +214,7 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
    * DOM splitting/reinsertion.
    */
   clearTextColor(): void {
-    const range = this.getRestoredSelectionRange();
+    const range = this.getCurrentSelectionRange();
 
     if (!range) {
       return;
@@ -202,7 +225,6 @@ export class NarrationBlockEditorComponent implements OnChanges, AfterViewInit {
     this.selectedColor = '#E8F8FF';
 
     this.onInput();
-    this.savedRange = null;
   }
 
   private cleanHtml(html: string): string {
