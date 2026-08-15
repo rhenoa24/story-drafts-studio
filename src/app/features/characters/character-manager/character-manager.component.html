@@ -34,7 +34,7 @@
                         (click)="colorPicker.click()"></span>
 
                     <input type="text" class="color-input" [style.background]="char.nameplateColor"
-                        [ngModel]="char.nameplateColor"
+                        [style.color]="readableTextColor(char.nameplateColor)" [ngModel]="char.nameplateColor"
                         (ngModelChange)="store.updateCharacter(char.id, { nameplateColor: $event })" />
 
                     <input #colorPicker type="color" class="native-color-picker" [value]="char.nameplateColor"

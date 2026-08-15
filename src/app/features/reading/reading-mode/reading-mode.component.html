@@ -46,7 +46,8 @@
 
             @case ('dialogue') {
             <div class="beat dialogue-beat" [class.right]="block.align === 'right'">
-                <div class="nameplate" [style.background]="characterColor(block.characterId)">
+                <div class="nameplate" [style.background]="characterColor(block.characterId)"
+                    [style.color]="characterTextColor(block.characterId)">
                     {{ characterName(block.characterId) }}
                 </div>
 

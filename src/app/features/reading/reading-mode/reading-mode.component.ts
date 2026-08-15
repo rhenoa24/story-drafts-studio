@@ -7,6 +7,7 @@ import { StoryDataService } from '../../../core/services/story-data.service';
 import { EditModeService } from '../../../core/services/edit-mode.service';
 import { Block, SceneBlock } from '../../../core/models';
 import { IconComponent } from '../../../shared/icon/icon.component';
+import { readableTextColor } from '../../../core/utils/color.util';
 
 @Component({
   selector: 'app-reading-mode',
@@ -117,6 +118,15 @@ export class ReadingModeComponent {
 
   characterColor(id: string): string {
     return this.store.characterMap().get(id)?.nameplateColor ?? '#3A5A6E';
+  }
+
+  /**
+   * Picks a readable nameplate text color for a given background.
+   * Falls back to var(--paper) when the background is bright enough that
+   * white text would lose contrast; otherwise white.
+   */
+  characterTextColor(id: string): string {
+    return readableTextColor(this.characterColor(id));
   }
 
   trustedHtml(html: string): SafeHtml {
